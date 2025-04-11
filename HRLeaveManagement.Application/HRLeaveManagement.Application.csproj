@@ -10,7 +10,7 @@
     <Folder Include="Features\Category\" />
     <Folder Include="Features\Departments\" />
     <Folder Include="Features\Position\Commands\" />
-    <Folder Include="Features\Position\Queries\" />
+    <Folder Include="Features\Position\Queries\GetPositionById\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +19,7 @@
     <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>

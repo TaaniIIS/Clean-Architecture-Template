@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace HRLeaveManagement.CoreBusiness.Entity
 {
-    public class CompanyLocation
+    internal class test
     {
-        public int Id { get; set; }
-        public string? Address { get; set; }
-        public string? Country { get; set; }
     }
 }

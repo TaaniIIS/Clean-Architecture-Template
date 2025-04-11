@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Web.Domain.Entity
+namespace HRLeaveManagement.CoreBusiness.Entity
 {
     public class Category
     {

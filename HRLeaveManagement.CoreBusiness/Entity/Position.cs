@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
 
-namespace Web.Domain.Entity
+
+namespace HRLeaveManagement.CoreBusiness.Entity
 {
     public class Position
     {
