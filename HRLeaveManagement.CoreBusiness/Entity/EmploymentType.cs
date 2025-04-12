@@ -10,7 +10,8 @@ namespace HRLeaveManagement.CoreBusiness.Entity
     {
             public int EmploymentTypeID { get; set; }
             public string Name { get; set; } // Full-time, Part-time, etc.
+             // Navigation Property    
             public ICollection<Employee> Employees { get; set; }
-        
+
     }
 }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using HRLeaveManagement.Application.Features.Position;
+using HRLeaveManagement.CoreBusiness.Entity;
 
 namespace HRLeaveManagement.Application.Profiles
 {
@@ -17,8 +19,8 @@ namespace HRLeaveManagement.Application.Profiles
             // This mapping tells AutoMapper how to map between the 'Position' entity and the 'PositionDto'.
             // 'CreateMap<Source, Destination>()' automatically maps properties with the same names and types.
             // 'ReverseMap()' adds the reverse mapping as well, i.e., from PositionDto to Position.
-        // CreateMap<Position, PositionDto>()
-         //.ReverseMap();
+            CreateMap<Position, PositionDto>()
+            .ReverseMap();
 
             // Optional: You can customize mappings like this if property names don't match:
             // .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));

@@ -20,15 +20,15 @@ namespace HRLeaveManagement.Infrastructure.Extensions
             // Registers the ApplicationDbContext with the dependency injection container.
             // It uses SQL Server as the database provider and pulls the connection string named "AppConnection"
             // from your appsettings.json or environment configuration.
-            service.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    configuration.GetConnectionString("AppConnection") ??
-                    // If the connection string is not found, throw an exception to prevent startup.
-                    throw new InvalidOperationException("Your connection string, 'AppConnection', was not found")
-                )
-            // Optional: You could enable retry logic like below if needed.
-            // o => o.EnableRetryOnFailure()
-            );
+    service.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(
+            configuration.GetConnectionString("AppConnection") ??
+            // If the connection string is not found, throw an exception to prevent startup.
+            throw new InvalidOperationException("Your connection string, 'AppConnection', was not found")
+        )
+    // Optional: You could enable retry logic like below if needed.
+    // o => o.EnableRetryOnFailure()
+    );
 
             // Registers the generic repository so it can be injected as IRepository<T>.
             // AddScoped means a new instance is created per HTTP request.

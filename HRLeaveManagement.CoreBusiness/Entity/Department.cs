@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace HRLeaveManagement.CoreBusiness.Entity
 {
+    // Core/Entities/Department.cs
     public class Department
     {
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? Code { get; set; }
+        public int DepartmentID { get; set; }
+        public string Name { get; set; }
+
+        // Navigation Properties
+       // public ICollection<Team> Teams { get; set; }
+        public ICollection<Employee> Employees { get; set; }
     }
 }

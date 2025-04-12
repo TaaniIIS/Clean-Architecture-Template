@@ -14,10 +14,10 @@ namespace HRLeaveManagement.CoreBusiness.Entity
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public int PositionID { get; set; }
-        public string? Title { get; set; }
-        public string? JobLevel { get; set; }
+        public string Title { get; set; }
+        public string JobLevel { get; set; }
         public bool IsActive { get; set; }
-        public ICollection<Employee>? Employees { get; set; }
+        public ICollection<Employee> Employees { get; set; }
 
        
     }

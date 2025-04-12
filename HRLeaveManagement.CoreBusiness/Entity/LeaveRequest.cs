@@ -6,11 +6,28 @@ using System.Threading.Tasks;
 
 namespace HRLeaveManagement.CoreBusiness.Entity
 {
+    // Core/Entities/LeaveRequest.cs
     public class LeaveRequest
     {
-        public int Id { get; set; }
-        public int EmployeeId { get; set; }
-        public int LeaveTypeId { get; set; }
-        public DateTime StartDate { get; set; }
+        public int LeaveRequestID { get; set; }
+        public string Status { get; set; }
+        public int LeaveAmount { get; set; }
+
+        // Foreign Keys
+        public  int EmployeeID { get; set; }
+        public int LeaveTypeID { get; set; }
+
+        // Navigation Properties
+        public virtual Employee Employee { get; set; }
+        public LeaveType  LeaveType { get; set; }
+
+
+        public void ValidateRequest(LeaveType leaveType)
+        {
+            if (LeaveAmount > leaveType.DefaultDays)
+                throw new InvalidOperationException(
+                    $"Cannot request more than {leaveType.DefaultDays} days for {leaveType.Name} leave."
+                );
+        }
     }
 }

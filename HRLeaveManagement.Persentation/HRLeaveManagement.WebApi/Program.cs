@@ -50,12 +50,12 @@ var builder = WebApplication.CreateBuilder(args);
 //var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(option =>
-option.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection")));//
+//builder.Services.AddDbContext<ApplicationDbContext>(option =>
+//option.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection")));//
 
-builder.Services.AddIdentityApiEndpoints<IdentityUser>().
-    AddRoles<IdentityRole>().
-    AddEntityFrameworkStores<ApplicationDbContext>();//
+//builder.Services.AddIdentityApiEndpoints<IdentityUser>().
+//    AddRoles<IdentityRole>().
+//    AddEntityFrameworkStores<ApplicationDbContext>();//
 
 //builder.Services.AddScoped<IRoleService, RoleService>();
 
@@ -75,7 +75,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 
 var app = builder.Build();
-app.MapIdentityApi<IdentityUser>(); // me
+//app.MapIdentityApi<IdentityUser>(); // me
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
