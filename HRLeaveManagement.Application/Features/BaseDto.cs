@@ -9,5 +9,7 @@ namespace HRLeaveManagement.Application.Features
     public class BaseDto
     {
         public int PositionId { get; set; }
+       // public int Id { get; set; }
+
     }
 }

@@ -9,8 +9,11 @@
   <ItemGroup>
     <Folder Include="Features\Category\" />
     <Folder Include="Features\Departments\" />
-    <Folder Include="Features\Position\Commands\" />
-    <Folder Include="Features\Position\Queries\GetPositionById\" />
+    <Folder Include="Features\Employee\Commands\" />
+    <Folder Include="Features\Employee\Queries\GetEmployee\" />
+    <Folder Include="Features\Employee\Queries\GetEmployeeById\" />
+    <Folder Include="Features\Position\Commands\DeletePosition\" />
+    <Folder Include="Features\Position\Commands\UpdatePosition\" />
   </ItemGroup>
 
   <ItemGroup>

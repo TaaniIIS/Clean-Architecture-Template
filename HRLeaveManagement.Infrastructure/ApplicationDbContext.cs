@@ -34,6 +34,22 @@ namespace HRLeaveManagement.Infrastructure
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
        // Infrastructure/Data/ApplicationDbContext.cs
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{

@@ -14,7 +14,7 @@ namespace HRLeaveManagement.Infrastructure.Repositories
     {
         // Dependency injection of the application's database context.
         // This context allows the repository to communicate with the database.
-        private readonly ApplicationDbContext _applicationDbContext;
+        internal readonly ApplicationDbContext _applicationDbContext;
 
         // Constructor that receives the ApplicationDbContext from DI and stores it.
         public Repository(ApplicationDbContext applicationDbContext)
