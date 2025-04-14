@@ -26,6 +26,19 @@ namespace HRLeaveManagement.Infrastructure.Repositories
             .ToListAsync();
 
 
+
+            //return await _applicationDbContext.Employees
+            //    .Include(e => e.Department)
+            //    .Select(e => new Employee
+            //    {
+            //        EmployeeID = e.EmployeeID,
+            //        FirstName = $"{e.FirstName} {e.LastName}",
+            //        DepartmentID = e.Department.DepartmentID,
+            //        LastName = e.Department.Name
+            //    })
+            //    .ToListAsync();
+
+
             //    return await _applicationDbContext.Employees
             //.Include(e => e.Department)  // Load Department data
             //.Include(e => e.Position)    // Load Position data

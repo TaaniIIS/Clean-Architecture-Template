@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace HRLeaveManagement.Application.Features.Departments
 {
-    public class DepartmentDto :BaseDto
+    public class DepartmentDto // :BaseDto
     {
+        public int Departmentid { get; set; }
         public string Name { get; set; }
 
     }

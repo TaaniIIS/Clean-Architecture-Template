@@ -7,6 +7,8 @@ using AutoMapper;
 using HRLeaveManagement.Application.Features.Departments;
 using HRLeaveManagement.Application.Features.Employee;
 using HRLeaveManagement.Application.Features.Employee.Queries.GetEmployeeByDepartment;
+using HRLeaveManagement.Application.Features.EmploymentType;
+using HRLeaveManagement.Application.Features.LeaveType;
 using HRLeaveManagement.Application.Features.Position;
 using HRLeaveManagement.CoreBusiness.Entity;
 
@@ -27,6 +29,9 @@ namespace HRLeaveManagement.Application.Profiles
             CreateMap<Employee,EmployeeDto>() .ReverseMap();
             //CreateMap<Department,EmployeeDepartmentDto>() .ReverseMap();
             CreateMap<Department, DepartmentDto>().ReverseMap();
+            CreateMap<EmploymentType, EmploymentTypeDto>().ReverseMap();
+            CreateMap<LeaveType, LeaveTypeDto>().ReverseMap();
+
 
 
             // Optional: You can customize mappings like this if property names don't match:
