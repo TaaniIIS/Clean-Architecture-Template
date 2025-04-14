@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.Application.Features.Position.Queries.GetPosition;
 using HRLeaveManagement.Application.Features.Position.Queries.GetPositionById;
+using HRLeaveManagement.Application.Features.Position.Commands.DeletePosition;
+using HRLeaveManagement.Application.Features.Position.Commands.UpdatePosition;
 
 namespace HRLeaveManagement.WebApi.Controllers
 {
@@ -24,7 +26,20 @@ namespace HRLeaveManagement.WebApi.Controllers
         public async Task<ActionResult<GetPositionByIdResponse>> GetPosition(int id)
         {
             var result = await Mediator.Send(new GetPositionByIdQuery { Id = id });
+            return Ok(result);
+        }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<DeletePositionResponse>> Delete(int id)
+        {
+            var result = await Mediator.Send(new DeletePositionCommand() { Id = id });
+            return Ok(result);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<UpdatePositionResponse>> Update(int id, PositionDto commad)
+        {
+            var result = await Mediator.Send(new UpdatePositionCommand() { Id = id, UpdatePosition = commad });
             return Ok(result);
         }
 

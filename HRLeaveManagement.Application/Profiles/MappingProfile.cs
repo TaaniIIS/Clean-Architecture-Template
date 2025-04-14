@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using HRLeaveManagement.Application.Features.Departments;
 using HRLeaveManagement.Application.Features.Employee;
 using HRLeaveManagement.Application.Features.Employee.Queries.GetEmployeeByDepartment;
 using HRLeaveManagement.Application.Features.Position;
@@ -24,7 +25,9 @@ namespace HRLeaveManagement.Application.Profiles
             CreateMap<Position, PositionDto>()
             .ReverseMap();
             CreateMap<Employee,EmployeeDto>() .ReverseMap();
-            CreateMap<Department,EmployeeDepartmentDto>() .ReverseMap();
+            //CreateMap<Department,EmployeeDepartmentDto>() .ReverseMap();
+            CreateMap<Department, DepartmentDto>().ReverseMap();
+
 
             // Optional: You can customize mappings like this if property names don't match:
             // .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));

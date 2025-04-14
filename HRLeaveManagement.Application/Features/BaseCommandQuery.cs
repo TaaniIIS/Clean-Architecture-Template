@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace HRLeaveManagement.Application.Features
 {
-    public class BaseDto
+    public class BaseCommandQuery
     {
-        public int PositionId { get; set; }
         public int Id { get; set; }
-
     }
 }
