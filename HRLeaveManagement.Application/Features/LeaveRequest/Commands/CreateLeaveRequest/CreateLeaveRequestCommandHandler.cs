@@ -15,7 +15,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HRLeaveManagement.Application.Features.LeaveRequest.Commands.CreateLeaveRequest
 {
-    public class CreateLeaveRequestCommandHandler : IRequestHandler<CreatePositonCommand, BaseResponse<LeaveRequestDto>>
+    public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveRequestCommand, BaseResponse<LeaveRequestDto>>
     {
         private readonly IRepository<HRLeaveManagement.CoreBusiness.Entity.LeaveRequest> _repository;
         private readonly IEmployeeRepository _employeeRepo;
@@ -36,7 +36,7 @@ namespace HRLeaveManagement.Application.Features.LeaveRequest.Commands.CreateLea
             _mapper = mapper;
             _logger = logger;
         }
-        public async Task<BaseResponse<LeaveRequestDto>> Handle(CreatePositonCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<LeaveRequestDto>> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
         {
             var validator = new CreateLeaveRequestValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
