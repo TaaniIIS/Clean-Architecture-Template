@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace HRLeaveManagement.Application.Features.LeaveRequest.Commands.CreateLeaveRequest
 {
-    public class CreateLeaveRequestValidator : AbstractValidator<CreateLeaveRequestCommand>
+    public class CreateLeaveRequestValidator : AbstractValidator<CreatePositonCommand>
     {
         public CreateLeaveRequestValidator()
         {

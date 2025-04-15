@@ -2,7 +2,7 @@
 @using HRLeaveManagement.WebApp.Services
 @inject IPositionService IPosition
 
-<h3>GetPosition</h3>
+<h3>Employee Job Experience</h3>
 
 @if (_positions == null)
 {
@@ -13,8 +13,9 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Employee</th>
-                <th>Leave Type</th>
+                <th>NO</th>
+                <th>Title</th>
+                <th>Experience Level</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -22,7 +23,7 @@ else
             @foreach (var request in _positions)
             {
                 <tr>
-                    <td>@request.Id</td>
+                    <td>@request.PositionId</td>
                     <td>@request.Title</td>
                     <td>@request.JobLevel</td>
                     <td>@request.IsActive</td>

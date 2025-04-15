@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using HRLeaveManagement.Application.Interfaces;
@@ -39,9 +40,11 @@ namespace HRLeaveManagement.Application.Features.Position.Commands.CreatePositio
 
             try
             {
+                _logger.LogInformation("Received command: {Command}",
+                JsonSerializer.Serialize(request));
                 // Map DTO to domain entity
                 var positionEntity = _mapper.Map<HRLeaveManagement.CoreBusiness.Entity.Position>(request.CreatePosition);
-
+                
                 // Save to database
                 var createdEntity = await _repository.AddAsync(positionEntity);
 
