@@ -10,7 +10,9 @@ namespace HRLeaveManagement.CoreBusiness.Entity
     public class LeaveRequest
     {
         public int LeaveRequestID { get; set; }
-        public string Status { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Status { get; set; } = "Pending"; // Default status
         public int LeaveAmount { get; set; }
 
         // Foreign Keys

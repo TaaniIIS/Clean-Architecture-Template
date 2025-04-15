@@ -12,8 +12,6 @@ namespace HRLeaveManagement.WebApi.Controllers
     [ApiController]
     public class EmploymentTypesController : ApiController
     {
-
-
         [HttpGet]
         [ProducesResponseType(typeof(List<EmploymentTypeDto>), 200)]
         public async Task<IActionResult> GetAll()
@@ -28,7 +26,7 @@ namespace HRLeaveManagement.WebApi.Controllers
         public async Task<IActionResult> Create(CreateEmploymentTypeCommand command)
         {
             var result = await Mediator.Send(command);
-            return Ok(result); //CreatedAtAction(nameof(GetAll), new { id = result });
+            return Ok(result); 
         }
 
 
