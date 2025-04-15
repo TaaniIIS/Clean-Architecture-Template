@@ -73,10 +73,25 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 //builder.Services.AddInfrastructure(builder.Configuration);
 
+// Add CORS (before app.MapControllers())
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("BlazorClient", policy =>
+    {
+
+        //https://localhost:7137
+        policy.WithOrigins("https://localhost:7137") // Blazor app URL
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+
+
 
 var app = builder.Build();
 //app.MapIdentityApi<IdentityUser>(); // me
-
+app.UseCors("BlazorClient");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

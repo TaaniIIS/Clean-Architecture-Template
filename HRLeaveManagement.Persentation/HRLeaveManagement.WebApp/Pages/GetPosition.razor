@@ -1,0 +1,43 @@
+﻿@page "/GetPosition"
+@using HRLeaveManagement.WebApp.Services
+@inject IPositionService IPosition
+
+<h3>GetPosition</h3>
+
+@if (_positions == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Leave Type</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var request in _positions)
+            {
+                <tr>
+                    <td>@request.Id</td>
+                    <td>@request.Title</td>
+                    <td>@request.JobLevel</td>
+                    <td>@request.IsActive</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<HRLeaveManagement.Application.Features.Position.PositionDto> _positions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _positions = await IPosition.Get();
+    }
+}
