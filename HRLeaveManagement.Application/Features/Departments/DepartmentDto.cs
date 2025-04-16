@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace HRLeaveManagement.Application.Features.Departments
 {
-    public class DepartmentDto // :BaseDto
+    public class DepartmentDto 
     {
         public int Departmentid { get; set; }
         public string Name { get; set; }
+        //public DateTime CreatedDate { get; set; } = DateTime.Now;
 
     }
 }

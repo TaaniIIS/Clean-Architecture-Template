@@ -8,6 +8,8 @@ using HRLeaveManagement.Application.Features.Departments.Commands.UpdateDepartme
 using HRLeaveManagement.Application.Response;
 using HRLeaveManagement.Application.Features.Departments.Queries.GetDepartment;
 using HRLeaveManagement.Application.Features.Departments.Commands.DeleteDepartment;
+using HRLeaveManagement.Application.Features.Position.Queries.GetPositionById;
+using HRLeaveManagement.Application.Features.Departments.Queries.GetDepartmentById;
 
 namespace HRLeaveManagement.WebApi.Controllers
 {
@@ -21,6 +23,12 @@ namespace HRLeaveManagement.WebApi.Controllers
         {
             var response = await Mediator.Send(new GetDepartmentQuery());
             return Ok(response);
+        }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetDepartmentByIdResponse>> GetId(int id)
+        {
+            var result = await Mediator.Send(new GetDepartmentByIdQuery { Id = id });
+            return Ok(result);
         }
 
         [HttpPost]

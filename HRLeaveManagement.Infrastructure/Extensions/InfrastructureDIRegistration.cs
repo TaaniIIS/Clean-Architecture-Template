@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HRLeaveManagement.Application.Interfaces;
 using HRLeaveManagement.Infrastructure.Repositories;
+using HRLeaveManagement.WebApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +36,6 @@ namespace HRLeaveManagement.Infrastructure.Extensions
             // Whenever IRepository<T> is requested, the app will inject Repository<T>.
             service.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             service.AddTransient<IEmployeeRepository, DepartmentEmployeesRepository>();
-
 
             // Returns the modified IServiceCollection so the caller can continue chaining other service registrations.
             return service;

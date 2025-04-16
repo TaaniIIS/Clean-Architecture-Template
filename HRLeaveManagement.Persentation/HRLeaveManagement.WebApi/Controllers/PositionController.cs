@@ -19,9 +19,8 @@ namespace HRLeaveManagement.WebApi.Controllers
         public async Task<ActionResult<GetPositionResponse>> GetPosition()
         {
             var response = await Mediator.Send(new GetPositionQuery());
-            return Ok(response.Data); // Return just the list.
+            return Ok(response.Data);
         }
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult<GetPositionByIdResponse>> GetPosition(int id)
@@ -45,12 +44,12 @@ namespace HRLeaveManagement.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<PositionDto>>> Create(PositionDto command)
+        public async Task<ActionResult<CreatePositionResponse>> Create(PositionDto commad)
         {
 
-            var result = await Mediator.Send(new CreatePositionCommand() { CreatePosition = command });
+            var result = await Mediator.Send(new CreatePositionCommand() { CreatePosition = commad });
 
-            return Ok(result.Data);
+            return Ok(result);
         }
 
 

@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Category\" />
-    <Folder Include="Features\Departments\Queries\GetDepartmentById\" />
     <Folder Include="Features\Employee\Commands\" />
     <Folder Include="Features\Employee\Queries\GetEmployee\" />
     <Folder Include="Features\Employee\Queries\GetEmployeeById\" />
