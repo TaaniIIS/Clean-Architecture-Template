@@ -23,8 +23,8 @@ namespace HRLeaveManagement.WebApp.Services
         public async Task<List<DepartmentDto>> Get()
         {
             try
-            {
-                return await _http.GetFromJsonAsync<List<DepartmentDto>>("/api/Department/GetDepartments");
+            {///api/Department/GetDepartment
+                return await _http.GetFromJsonAsync<List<DepartmentDto>>("/api/Department/GetDepartment");
             }
             catch (Exception ex)
             {

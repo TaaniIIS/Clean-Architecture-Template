@@ -83,6 +83,7 @@
     </div>
 </div>
 
+
 @code {
     private List<DepartmentDto> departments;
     private bool showAddForm = false;
@@ -141,3 +142,68 @@
         }
     }
 }
+
+
+@* @page "/GetDepartment" 
+@using HRLeaveManagement.Application.Features.Departments
+@using HRLeaveManagement.WebApp.Services
+
+@inject IDepartmentService DepartmentService
+
+<h3>Department List</h3>
+
+@if (departments == null)
+{
+    <div class="alert alert-info">Loading departments...</div>
+}
+else if (!departments.Any())
+{
+    <div class="alert alert-warning">No departments found</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Created Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var dept in departments)
+                {
+                    <tr>
+                        <td>@dept.Departmentid</td>
+                        <td>@dept.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private List<DepartmentDto>? departments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDepartments();
+        StateHasChanged();
+
+    }
+
+    private async Task LoadDepartments()
+    {
+        try
+        {
+            departments = await DepartmentService.Get();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading departments: {ex.Message}");
+            // In real app, show error to user
+        }
+    }
+}*@

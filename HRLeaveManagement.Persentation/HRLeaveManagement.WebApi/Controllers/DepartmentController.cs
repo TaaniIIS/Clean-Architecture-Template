@@ -22,7 +22,7 @@ namespace HRLeaveManagement.WebApi.Controllers
         public async Task<ActionResult<GetDepartmentResponse>> Get()
         {
             var response = await Mediator.Send(new GetDepartmentQuery());
-            return Ok(response);
+            return Ok(response.Data);
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<GetDepartmentByIdResponse>> GetId(int id)
