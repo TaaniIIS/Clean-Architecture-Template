@@ -13,7 +13,6 @@ namespace HRLeaveManagement.WebApp.Services
         {
             _http = http;
         }
-
         public async Task<List<PositionDto>> Get()
         {
             return await _http.GetFromJsonAsync<List<PositionDto>>("/Position/GetPosition");
