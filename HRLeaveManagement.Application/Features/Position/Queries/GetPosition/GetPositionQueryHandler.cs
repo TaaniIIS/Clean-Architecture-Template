@@ -4,15 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using HRLeaveManagement.Application.Features.Departments.Queries.GetDepartmentById;
 using HRLeaveManagement.Application.Interfaces;
 using HRLeaveManagement.Application.Response;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Web.Application.Features.Position.Queries.GetPosition;
 
 
 namespace HRLeaveManagement.Application.Features.Position
 {
-    public class GetPositionQueryHandler : IRequestHandler<GetPositionQuery, BaseResponse<List<PositionDto>>>
+    public class GetPositionQueryHandler : IRequestHandler<GetPositionQuery, BaseResponse<List<PositionDto>>>  // BaseResponse<List<PositionDto>>>
     {
         private readonly IRepository<HRLeaveManagement.CoreBusiness.Entity.Position> _repository;
         private readonly IMapper _mapper;
@@ -47,6 +49,8 @@ namespace HRLeaveManagement.Application.Features.Position
                 return BaseResponse<List<PositionDto>>.FailureResult("An error occurred while retrieving positions.");
             }
         }
+
+       
     }
 
 

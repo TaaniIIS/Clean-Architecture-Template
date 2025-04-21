@@ -10,6 +10,8 @@ namespace HRLeaveManagement.Application.Response
 {
     public class GetPositionQuery : IRequest<BaseResponse<List<PositionDto>>>
     {
+
+        //  additional query paramerters.
         public bool? IsActive { get; set; }  // Optional filter
        
 
