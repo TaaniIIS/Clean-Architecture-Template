@@ -36,12 +36,38 @@ namespace HRLeaveManagement.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult<UpdatePositionResponse>> Update(int id, PositionDto commad)
         {
             var result = await Mediator.Send(new UpdatePositionCommand() { Id = id, UpdatePosition = commad });
             return Ok(result);
         }
+
+
+
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Update(int id, [FromBody] PositionDto command)
+        //{
+        //    try
+        //    {
+        //        var result = await Mediator.Send(new UpdatePositionCommand
+        //        {
+        //            Id = id,
+        //            UpdatePosition = command
+        //        });
+
+        //        if (!result.Success)
+        //        {
+        //            return BadRequest(result);
+        //        }
+
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, new { Error = ex.Message });
+        //    }
+        //}
 
         [HttpPost]
         public async Task<ActionResult<CreatePositionResponse>> Create(PositionDto commad)
@@ -51,6 +77,8 @@ namespace HRLeaveManagement.WebApi.Controllers
 
             return Ok(result);
         }
+
+
 
         [HttpGet("GetEmployeeByDepart")]
         public async Task<ActionResult<GetDepartmentEmployeesResponse>> GetEmpByDepertment()

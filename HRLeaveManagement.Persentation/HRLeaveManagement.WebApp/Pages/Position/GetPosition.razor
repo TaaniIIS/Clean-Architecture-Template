@@ -1,0 +1,85 @@
+﻿@page "/Position/GetPosition"
+@using HRLeaveManagement.WebApp.Model
+@using HRLeaveManagement.WebApp.Services
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject IPositionService PositionService
+@inject NavigationManager Navigation
+
+<h3>Position List</h3>
+
+
+
+<div class="mb-3">
+    <button class="btn btn-primary" @onclick="NavigateToCreate">
+        <i class="fas fa-plus"></i> Add New Position
+    </button>
+</div>
+
+@if (positions == null)
+{
+    <div class="text-center my-4">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <QuickGrid Items="@positions.AsQueryable()" class="table">
+        <PropertyColumn Property="@(p => p.PositionId)" Title="ID" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Title)" Title="Position" Sortable="true" />
+        <PropertyColumn Property="@(p => p.JobLevel)" Title="Job Level" />
+        <TemplateColumn Title="Status">
+            <span class="badge @(context.IsActive ? "bg-success" : "bg-secondary")">
+                @(context.IsActive ? "Active" : "Inactive")
+            </span>
+        </TemplateColumn>
+        <TemplateColumn Title="Actions">
+
+            <button class="btn btn-sm btn-danger" @onclick="() => NavigateToEdit(context.PositionId)">
+                <i class="fas fa-trash"></i> Edit
+            </button>
+
+            @* <button class="btn btn-sm btn-danger" @onclick="() => NavigateToDelete(context.PositionId)"> *@
+            @*     <i class="fas fa-trash"></i> Delete *@
+            @* </button> *@
+
+
+
+
+        </TemplateColumn>
+    </QuickGrid>
+}
+
+@code {
+    private List<PositionViewModel>? positions;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            positions = await PositionService.GetAllAsync() ?? new List<PositionViewModel>();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Failed to load positions: {ex.Message}";
+            Console.Error.WriteLine(ex);
+        }
+    }
+
+    private void NavigateToCreate()
+    {
+        Navigation.NavigateTo($"/position/edit/0");
+    }
+
+    private void NavigateToEdit(int id)
+    {
+        Navigation.NavigateTo($"/position/edit/{id}");
+    }
+
+    private void NavigateToDelete(int id)
+    {
+        Navigation.NavigateTo($"/position/delete/{id}");
+    }
+}

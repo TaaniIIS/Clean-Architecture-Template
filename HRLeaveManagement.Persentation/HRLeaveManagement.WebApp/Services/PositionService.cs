@@ -47,7 +47,20 @@ namespace HRLeaveManagement.WebApp.Services
         {
             // The GetByIdAsync method is an asynchronous method that retrieves a single PositionViewModel object by its ID.
             // It uses the HttpClient instance (_http) to send a GET request to the API endpoint "/api/Position/{id}".
-            return await _http.GetFromJsonAsync<PositionViewModel>($"/api/Position/{id}");
+            // return await _http.GetFromJsonAsync<PositionViewModel>($"/api/Position/{id}");
+            try
+            {
+                var response = await _http.GetAsync($"/api/Position/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PositionViewModel>();
+                }
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
 
@@ -79,23 +92,46 @@ namespace HRLeaveManagement.WebApp.Services
             // It uses the HttpClient instance (_http) to send a PUT request to the API endpoint "/api/Position".
             // The method is not implemented yet, so it throws a NotImplementedException.
             // The UpdateAsync method is an asynchronous method that updates a PositionViewModel object.
-            var emptyContent = new StringContent(JsonSerializer.Serialize(positionViewModel),
-                Encoding.UTF8, "application/json");
+            // var emptyContent = new StringContent(JsonSerializer.Serialize(positionViewModel),
+            //  Encoding.UTF8, "application/json");
             // The emptyContent variable is created to hold the serialized JSON content of the positionViewModel object.
             // The StringContent class is used to create HTTP content based on a string.
             // The JSON content is serialized using JsonSerializer.Serialize.
             // The content type is set to "application/json" to indicate that the content is in JSON format.
 
 
-            var response = await _http.PutAsync($"/api/Position/{id}", emptyContent);
+            //var response = await _http.PutAsync($"/api/Position/{id}", emptyContent);
             // The response variable holds the result of the PUT request.
             // The PUT request is sent to the API endpoint "/api/Position/{id}".    
             // The id parameter is used to specify the ID of the PositionViewModel object to be updated.
             // The method returns a Task<bool>, which represents the asynchronous operation.
             // The result is a boolean indicating whether the update was successful.    
             // The response.IsSuccessStatusCode property is checked to determine if the request was successful.
-            return response.IsSuccessStatusCode;
+            // return response.IsSuccessStatusCode;
+            try
+            {
+                var content = new StringContent(
+                    JsonSerializer.Serialize(positionViewModel),
+                    Encoding.UTF8,
+                    "application/json");
 
+                var response = await _http.PutAsync($"/api/Position/{id}", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+
+                // Log the error if needed
+                var error = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Update failed: {error}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Update exception: {ex}");
+                return false;
+            }
 
         }
 

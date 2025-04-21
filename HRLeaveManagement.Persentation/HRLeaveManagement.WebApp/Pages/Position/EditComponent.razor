@@ -1,0 +1,198 @@
+﻿@*@page "/position/edit/{positionId:int}"
+@using HRLeaveManagement.WebApp.Model
+@using HRLeaveManagement.WebApp.Services
+@inject IPositionService PositionService
+@inject NavigationManager Navigation
+
+<h3>Create New Position</h3>
+
+<EditForm Model="newPosition" OnValidSubmit="HandleValidSubmit">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<div class="mb-3">
+		<label class="form-label">Title</label>
+		<InputText @bind-Value="newPosition.Title" class="form-control" />
+		<ValidationMessage For="@(() => newPosition.Title)" />
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label">Job Level</label>
+		<InputText @bind-Value="newPosition.JobLevel" class="form-control" />
+	</div>
+
+	<div class="mb-3 form-check">
+		<InputCheckbox @bind-Value="newPosition.IsActive" class="form-check-input" />
+		<label class="form-check-label">Active</label>
+	</div>
+
+	<div class="mt-3">
+		<button type="submit" class="btn btn-success me-2" disabled="@isProcessing">
+			@(isProcessing ? "Creating..." : "Create Position")
+		</button>
+		<button type="button" class="btn btn-secondary" @onclick="Cancel">
+			Cancel
+		</button>
+	</div>
+</EditForm>
+
+@code {
+	private PositionViewModel newPosition = new();
+	private bool isProcessing = false;
+
+	private async Task HandleValidSubmit()
+	{
+		isProcessing = true;
+		try
+		{
+			await PositionService.CreateAsync(newPosition);
+			Navigation.NavigateTo("/position/edit");
+		}
+		finally
+		{
+			isProcessing = false;
+		}
+	}
+
+	private void Cancel()
+	{
+		Navigation.NavigateTo("/Position/GetPosition");
+	}
+}
+
+*@
+
+
+@page "/position/edit/{positionId:int}"
+@using HRLeaveManagement.WebApp.Model
+@using HRLeaveManagement.WebApp.Services
+@inject IPositionService PositionService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<h3>@(positionId > 0 ? "Edit" : "Create") Position</h3>
+
+@if (isLoading)
+{
+    <div class="text-center my-4">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else if (position == null)
+{
+    <div class="alert alert-danger">Failed to load position data</div>
+}
+else
+{
+    <EditForm Model="position" OnValidSubmit="HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group mb-3">
+            <label class="form-label">Title</label>
+            <InputText @bind-Value="position.Title" class="form-control" />
+            <ValidationMessage For="@(() => position.Title)" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label class="form-label">Job Level</label>
+            <InputText @bind-Value="position.JobLevel" class="form-control" />
+        </div>
+
+        <div class="form-group form-check mb-3">
+            <InputCheckbox @bind-Value="position.IsActive" class="form-check-input" />
+            <label class="form-check-label">Active</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" disabled="@isProcessing">
+            @(positionId > 0 ? "Update" : "Create")
+        </button>
+        <button type="button" class="btn btn-secondary ms-2" @onclick="Cancel">
+            Cancel
+        </button>
+    </EditForm>
+}
+
+@code {
+    private PositionViewModel position = new();
+    private bool isLoading = true;
+    private bool isProcessing = false;
+
+    [Parameter]
+    public int positionId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadPosition();
+    }
+
+    private async Task LoadPosition()
+    {
+        try
+        {
+            if (positionId > 0)
+            {
+                position = await PositionService.GetByIdAsync(positionId);
+                if (position == null)
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Position not found");
+                    Navigation.NavigateTo("/position/list");
+                }
+            }
+            else
+            {
+                position = new PositionViewModel { IsActive = true };
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error loading position: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        isProcessing = true;
+        try
+        {
+            bool success;
+            if (positionId > 0)
+            {
+                success = await PositionService.UpdateAsync(positionId, position);
+            }
+            else
+            {
+                  await PositionService.CreateAsync(position);
+            }
+
+            // if (success)
+            // {
+            //     Navigation.NavigateTo("/position/list");
+            // }
+            // else
+            // {
+            //     await JSRuntime.InvokeVoidAsync("alert", "Operation failed. Please try again.");
+            // }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error: {ex.Message}");
+        }
+        finally
+        {
+            isProcessing = false;
+        }
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/position/list");
+    }
+}
