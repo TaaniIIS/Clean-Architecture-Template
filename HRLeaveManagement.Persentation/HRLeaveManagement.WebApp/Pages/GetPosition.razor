@@ -1,8 +1,171 @@
-﻿@page "/GetPosition"
-@using HRLeaveManagement.Application.Features.Position
+﻿@* @page "/GetPosition" *@
+@* @using HRLeaveManagement.WebApp.Services *@
+@* @using Microsoft.AspNetCore.Components.QuickGrid *@
+@* @inject IPositionService positionViewModelservice *@
+
+
+
+@page "/GetPosition"
 @using HRLeaveManagement.WebApp.Services
+@using Microsoft.AspNetCore.Components.QuickGrid
 @inject IPositionService PositionService
 
+<h3>Position Management</h3>
+
+<div class="mb-3">
+    <button class="btn btn-primary" @onclick="ShowAddForm">
+        <i class="fas fa-plus"></i> Add Position
+    </button>
+</div>
+
+<!-- Add/Edit Form -->
+@if (showForm)
+{
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5>@(currentPosition.PositionId == 0 ? "Add New Position" : "Edit Position")</h5>
+
+            <EditForm Model="currentPosition" OnValidSubmit="SavePosition">
+                <DataAnnotationsValidator />
+
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <InputText @bind-Value="currentPosition.Title" class="form-control" />
+                    <ValidationMessage For="@(() => currentPosition.Title)" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Job Level</label>
+                    <InputText @bind-Value="currentPosition.JobLevel" class="form-control" />
+                </div>
+
+                <div class="mb-3 form-check">
+                    <InputCheckbox @bind-Value="currentPosition.IsActive" class="form-check-input" />
+                    <label class="form-check-label">Active</label>
+                </div>
+
+                <button type="submit" class="btn btn-success me-2">
+                    @(isProcessing ? "Saving..." : "Save")
+                </button>
+                <button type="button" class="btn btn-secondary" @onclick="CancelForm">
+                    Cancel
+                </button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<!-- Positions Grid -->
+<QuickGrid Items="@positions" class="table">
+    <PropertyColumn Property="@(p => p.PositionId)" Title="ID" Sortable="true" />
+    <PropertyColumn Property="@(p => p.Title)" Title="Position Title" Sortable="true" />
+    <PropertyColumn Property="@(p => p.JobLevel)" Title="Job Level" Sortable="true" />
+    <TemplateColumn Title="Active">
+        <span class="badge @(context.IsActive ? "bg-success" : "bg-secondary")">
+            @(context.IsActive ? "Yes" : "No")
+        </span>
+    </TemplateColumn>
+    <TemplateColumn Title="Actions">
+        <button class="btn btn-sm btn-primary me-2" @onclick="() => EditPosition(context.PositionId)">
+            <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-sm btn-danger" @onclick="() => DeletePosition(context.PositionId)">
+            <i class="fas fa-trash"></i>
+        </button>
+    </TemplateColumn>
+</QuickGrid>
+
+@if (!positions.Any())
+{
+    <div class="alert alert-info mt-3">No positions found</div>
+}
+
+@code {
+    private IQueryable<PositionViewModel> positions = null;//new();
+    private PositionViewModel currentPosition = new();
+    private bool showForm = false;
+    private bool isProcessing = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPositions();
+    }
+
+    private async Task LoadPositions()
+    {
+        var   positionList = await PositionService.GetAllAsync();
+		positions = positionList.AsQueryable();
+		StateHasChanged();
+    }
+
+    private void ShowAddForm()
+    {
+        currentPosition = new PositionViewModel();
+        showForm = true;
+    }
+
+    private async Task EditPosition(int id)
+    {
+        var position = positions.FirstOrDefault(p => p.PositionId == id);
+        if (position != null)
+        {
+            currentPosition = new PositionViewModel
+                {
+                    PositionId = position.PositionId,
+                    Title = position.Title,
+                    JobLevel = position.JobLevel,
+                    IsActive = position.IsActive
+                };
+            showForm = true;
+        }
+    }
+
+    private void CancelForm()
+    {
+        showForm = false;
+        currentPosition = new PositionViewModel();
+    }
+
+    private async Task SavePosition()
+    {
+        isProcessing = true;
+
+        try
+        {
+            if (currentPosition.PositionId == 0)
+            {
+                await PositionService.CreateAsync(currentPosition);
+            }
+            else
+            {
+                await PositionService.UpdateAsync(currentPosition.PositionId, currentPosition);
+            }
+
+            await LoadPositions();
+            showForm = false;
+        }
+        finally
+        {
+            isProcessing = false;
+        }
+    }
+
+    private async Task DeletePosition(int id)
+    {
+        //if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this position?"))
+        {
+            await PositionService.DeleteAsync(id);
+            await LoadPositions();
+        }
+    }
+}
+
+
+
+
+
+
+@*
 <div class="position-container">
     <!-- Header and Add Button -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -19,24 +182,24 @@
             <div class="card-body">
                 <h5 class="card-title">Create New Position</h5>
 
-                <EditForm Model="_newPosition" OnValidSubmit="HandleValidSubmit">
+                <EditForm Model="_newpositionViewModels" OnValidSubmit="HandleValidSubmit">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
 
                     <div class="form-group">
                         <label>Title</label>
-                        <InputText @bind-Value="_newPosition.Title" class="form-control" />
-                        <ValidationMessage For="@(() => _newPosition.Title)" />
+                        <InputText @bind-Value="_newpositionViewModels.Title" class="form-control" />
+                        <ValidationMessage For="@(() => _newpositionViewModels.Title)" />
                     </div>
 
                     <div class="form-group">
                         <label>Job Level</label>
-                        <InputText @bind-Value="_newPosition.JobLevel" class="form-control" />
-                        <ValidationMessage For="@(() => _newPosition.JobLevel)" />
+                        <InputText @bind-Value="_newpositionViewModels.JobLevel" class="form-control" />
+                        <ValidationMessage For="@(() => _newpositionViewModels.JobLevel)" />
                     </div>
 
                     <div class="form-group form-check">
-                        <InputCheckbox @bind-Value="_newPosition.IsActive" class="form-check-input" />
+                        <InputCheckbox @bind-Value="_newpositionViewModels.IsActive" class="form-check-input" />
                         <label class="form-check-label">Is Active</label>
                     </div>
 
@@ -55,7 +218,7 @@
         </div>
     }
 
-    <!-- Positions List Table -->
+    <!-- positionViewModels List Table -->
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead class="thead-dark">
@@ -64,26 +227,24 @@
                     <th>Title</th>
                     <th>Job Level</th>
                     <th>Active</th>
-                    <th>Options</th>
-
                 </tr>
             </thead>
             <tbody>
-                @if (positions == null)
+                @if (positionViewModels == null)
                 {
                     <tr>
-                        <td colspan="4" class="text-center">Loading positions...</td>
+                        <td colspan="4" class="text-center">Loading positionViewModels...</td>
                     </tr>
                 }
-                else if (!positions.Any())
+                else if (!positionViewModels.Any())
                 {
                     <tr>
-                        <td colspan="4" class="text-center">No positions found</td>
+                        <td colspan="4" class="text-center">No positionViewModels found</td>
                     </tr>
                 }
                 else
                 {
-                    @foreach (var position in positions)
+                    @foreach (var position in positionViewModels)
                     {
                         <tr>
                             <td>@position.PositionId</td>
@@ -94,6 +255,9 @@
                                     @(position.IsActive ? "Yes" : "No")
                                 </span>
                             </td>
+                            <td>
+                                 <button class="btn btn-primary m-1" @onclick="()=>EditPosition(context.id)">Edit</button> 
+                            </td>
                         </tr>
                     }
                 }
@@ -103,21 +267,21 @@
 </div>
 
 @code {
-    private List<PositionDto> positions;
+    private List<PositionViewModel> positionViewModels;
     private bool showAddForm = false;
-    private PositionDto _newPosition = new();
+    private PositionViewModel _newpositionViewModels = new();
     private bool _isSubmitting = false;
     private string _message = string.Empty;
     private bool _isSuccess = false;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadPositions();
+        await LoadpositionViewModels();
     }
 
-    private async Task LoadPositions()
+    private async Task LoadpositionViewModels()
     {
-        positions = await PositionService.Get();
+        var PositionList= positionViewModels = await positionViewModelservice.GetAllAsync();
         StateHasChanged();
     }
 
@@ -126,7 +290,7 @@
         showAddForm = !showAddForm;
         if (!showAddForm)
         {
-            _newPosition = new PositionDto();
+            _newpositionViewModels = new PositionViewModel();
             _message = string.Empty;
         }
     }
@@ -138,15 +302,15 @@
 
         try
         {
-            var result = await PositionService.Post(_newPosition);
+            var result = await positionViewModelservice.CreateAsync(_newpositionViewModels);
             _isSuccess = result.Success;
             _message = result.Message;
 
             if (result.Success)
             {
-                _newPosition = new PositionDto();
+                _newpositionViewModels = new PositionViewModel();
                 showAddForm = false;
-                await LoadPositions();
+                await LoadpositionViewModels();
             }
         }
         catch (Exception ex)
@@ -160,23 +324,14 @@
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
+*@
 
 @* @using HRLeaveManagement.WebApp.Services *@
-@* @inject IPositionService IPosition *@
+@* @inject IpositionViewModelservice IPosition *@
 
 @* <h3>Employee Job Experience</h3> *@
 
-@* @if (_positions == null) *@
+@* @if (_positionViewModels == null) *@
 @* { *@
 @*     <p>Loading...</p> *@
 @* } *@
@@ -192,7 +347,7 @@
 @*             </tr> *@
 @*         </thead> *@
 @*         <tbody> *@
-@*             @foreach (var request in _positions) *@
+@*             @foreach (var request in _positionViewModels) *@
 @*             { *@
 @*                 <tr> *@
 @*                     <td>@request.PositionId</td> *@
@@ -207,10 +362,10 @@
 @* } *@
 
 @* @code { *@
-@*     private List<HRLeaveManagement.Application.Features.Position.PositionDto> _positions; *@
+@*     private List<HRLeaveManagement.Application.Features.Position.PositionDto> _positionViewModels; *@
 
 @*     protected override async Task OnInitializedAsync() *@
 @*     { *@
-@*         _positions = await IPosition.Get(); *@
+@*         _positionViewModels = await IPosition.Get(); *@
 @*     } *@
 @* } *@

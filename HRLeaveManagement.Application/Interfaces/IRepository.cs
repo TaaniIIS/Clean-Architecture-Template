@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HRLeaveManagement.CoreBusiness.Entity;
 
 namespace HRLeaveManagement.Application.Interfaces
 {
@@ -13,6 +14,8 @@ namespace HRLeaveManagement.Application.Interfaces
         // Retrieves all entities of type T from the data source.
         // Returns a read-only list of T objects asynchronously.
         Task<IReadOnlyList<T>> GetAllAsync();
+        //Task<List<T>> GetAllAsync();
+
 
         // Retrieves a single entity of type T by its unique identifier (id).
         Task<T> GetByIdAsync(int id);
@@ -25,7 +28,11 @@ namespace HRLeaveManagement.Application.Interfaces
         Task UpdateAsync(T entity);
 
         // Deletes the given entity of type T from the data source.
+
         Task DeleteAsync(T entity);
+        //Task<bool> DeleteAsync(T entity);
+        //Task DeleteAsync(int id);
+
     }
 
 }
