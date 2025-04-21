@@ -52,9 +52,6 @@ namespace HRLeaveManagement.WebApi.Controllers
             return Ok(result);
         }
 
-
-
-
         [HttpGet("GetEmployeeByDepart")]
         public async Task<ActionResult<GetDepartmentEmployeesResponse>> GetEmpByDepertment()
         {
