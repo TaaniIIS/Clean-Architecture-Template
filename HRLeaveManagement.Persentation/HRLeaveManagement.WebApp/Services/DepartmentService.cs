@@ -3,6 +3,7 @@ using HRLeaveManagement.Application.Features.Departments;
 using HRLeaveManagement.Application.Features.Employee;
 using HRLeaveManagement.Application.Features.Position;
 using HRLeaveManagement.Application.Response;
+using HRLeaveManagement.WebApp.Model;
 
 namespace HRLeaveManagement.WebApp.Services
 {
@@ -15,26 +16,42 @@ namespace HRLeaveManagement.WebApp.Services
             _http = http;
         }
 
+        
+
         //public async Task<List<DepartmentDto>> Get()
         //{
         //    return await _http.GetFromJsonAsync<List<DepartmentDto>>("/api/Department/");
         //}
 
-        public async Task<List<DepartmentDto>> Get()
+        public async Task<List<DepartmentViewModel>> Get()
         {
             try
             {///api/Department/GetDepartment
-                return await _http.GetFromJsonAsync<List<DepartmentDto>>("/api/Department/GetDepartment");
+                return await _http.GetFromJsonAsync<List<DepartmentViewModel>>("/api/Department/GetDepartment");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error fetching departments: {ex.Message}");
-                return new List<DepartmentDto>();
+                return new List<DepartmentViewModel>();
             }
         }
 
+        public Task<DepartmentDto> GetById(int id)
+        {
+            try
+            {
+                return _http.GetFromJsonAsync<DepartmentDto>($"/api/Department/{id}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching department by ID: {ex.Message}");
+                return Task.FromResult<DepartmentDto>(null);
+            }
+        }
 
-        public async Task<BaseResponse<DepartmentDto>> Post(DepartmentDto positionDto)
+     
+
+        public async Task<BaseResponse<DepartmentViewModel>> Post(DepartmentViewModel positionDto)
         {
             // Correct way to use PostAsJsonAsync
             var response = await _http.PostAsJsonAsync("/api/Department", positionDto);
@@ -42,12 +59,12 @@ namespace HRLeaveManagement.WebApp.Services
             // Ensure we handle the response properly
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<BaseResponse<DepartmentDto>>();
+                return await response.Content.ReadFromJsonAsync<BaseResponse<DepartmentViewModel>>();
             }
             else
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                return new BaseResponse<DepartmentDto>
+                return new BaseResponse<DepartmentViewModel>
                 {
                     Success = false,
                     Message = $"API Error: {response.StatusCode} - {errorContent}"
@@ -55,32 +72,60 @@ namespace HRLeaveManagement.WebApp.Services
             }
         }
 
+        public Task<BaseResponse<DepartmentDto>> Put(int id, DepartmentDto departmentViewModel)
+        {
+            var response = _http.PutAsJsonAsync($"/api/Department/{id}", departmentViewModel);
+            if (response.Result.IsSuccessStatusCode)
+            {
+                return response.Result.Content.ReadFromJsonAsync<BaseResponse<DepartmentDto>>();
+            }
+            else
+            {
+                var errorContent = response.Result.Content.ReadAsStringAsync();
+                return Task.FromResult(new BaseResponse<DepartmentDto>
+                {
+                    Success = false,
+                    Message = $"API Error: {response.Result.StatusCode} - {errorContent}"
+                });
+            }
+        }
+
         public Task<BaseResponse<bool>> Delete(int id)
         {
-            throw new NotImplementedException();
+            var response = _http.DeleteAsync($"/api/Department/{id}");
+            if (response.Result.IsSuccessStatusCode)
+            {
+                return response.Result.Content.ReadFromJsonAsync<BaseResponse<bool>>();
+            }
+            else
+            {
+                var errorContent = response.Result.Content.ReadAsStringAsync();
+                return Task.FromResult(new BaseResponse<bool>
+                {
+                    Success = false,
+                    Message = $"API Error: {response.Result.StatusCode} - {errorContent}"
+                });
+            }
         }
 
         public Task<bool> DepartmentExists(string name)
         {
-            throw new NotImplementedException();
+            var response = _http.GetAsync($"/api/Department/Exists?name={name}");
+            if (response.Result.IsSuccessStatusCode)
+            {
+                return response.Result.Content.ReadFromJsonAsync<bool>();
+            }
+            else
+            {
+                var errorContent = response.Result.Content.ReadAsStringAsync();
+                return Task.FromResult(false);
+            }
         }
-
-       
-
-        public Task<BaseResponse<DepartmentDto>> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<List<EmployeeDto>> GetEmployeesByDepartment(int departmentId)
         {
             throw new NotImplementedException();
         }
 
-
-        public Task<BaseResponse<DepartmentDto>> Update(int id, DepartmentDto departmentDto)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

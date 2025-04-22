@@ -1,95 +1,63 @@
-﻿@page "/GetDepartment"
+﻿@page "/departments"
+@page "/GetDepartment"
 @using HRLeaveManagement.Application.Features.Departments
 @using HRLeaveManagement.WebApp.Services
+@using Microsoft.AspNetCore.Components.QuickGrid
 @inject IDepartmentService DepartmentService
+@inject NavigationManager NavigationManager
 
-<div class="department-container">
-    <!-- Header and Add Button -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>Department Management</h3>
-        <button class="btn btn-primary" @onclick="ToggleAddForm">
-            @(showAddForm ? "Cancel" : "Add Department")
-        </button>
-    </div>
-
-    <!-- Add Department Form (Conditional) -->
-    @if (showAddForm)
-    {
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Create New Department</h5>
-
-                <EditForm Model="_newDepartment" OnValidSubmit="HandleValidSubmit">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-
-                     <div class="form-group">
-                        <label>Department Name</label>
-                        <InputText @bind-Value="_newDepartment.Name" class="form-control" />
-                        <ValidationMessage For="@(() => _newDepartment.Name)" />
-                    </div>
-
-                    <button type="submit" class="btn btn-success" disabled="@_isSubmitting">
-                        @(_isSubmitting ? "Creating..." : "Create Department")
-                    </button>
-                </EditForm>
-
-                @if (!string.IsNullOrEmpty(_message))
-                {
-                    <div class="alert @(_isSuccess ? "alert-success" : "alert-danger") mt-3">
-                        @_message
-                    </div>
-                }
+<div class="container-fluid py-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">Department Management</h3>
+                <button class="btn btn-light" @onclick="NavigateToCreate">
+                    <i class="fas fa-plus me-2"></i>Add Department
+                </button>
             </div>
         </div>
-    }
-    <!-- Departments List Table -->
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Created Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (departments == null)
-                {
-                    <tr>
-                        <td colspan="3" class="text-center">Loading departments...</td>
-                    </tr>
-                }
-                else if (!departments.Any())
-                {
-                    <tr>
-                        <td colspan="3" class="text-center">No departments found</td>
-                    </tr>
-                }
-                else
-                {
-                    @foreach (var department in departments)
-                    {
-                        <tr>
-                            <td>@department.Departmentid</td>
-                            <td>@department.Name</td>
-                            @* <td>@department.CreatedDate.ToString("dd/MM/yyyy")</td> *@
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
+
+        <div class="card-body">
+            @if (departments == null)
+            {
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading departments...</p>
+                </div>
+            }
+            else if (!departments.Any())
+            {
+                <div class="alert alert-info text-center">
+                    No departments found
+                </div>
+            }
+            else
+            {
+                <QuickGrid Items="@departments.AsQueryable()" Class="table table-hover table-striped">
+                    <PropertyColumn Property="@(d => d.Departmentid)" Title="ID" Sortable="true" />
+                    <PropertyColumn Property="@(d => d.Name)" Title="Name" Sortable="true" />
+                    @* <PropertyColumn Property="@(d => d.CreatedDate)" Title="Created Date" Format="dd/MM/yyyy" Sortable="true" /> *@
+
+                    <TemplateColumn Title="Actions">
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-primary" @onclick="() => EditDepartment(context.Departmentid)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteDepartment(context.Departmentid)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </TemplateColumn>
+                </QuickGrid>
+            }
+        </div>
     </div>
 </div>
 
-
 @code {
-    private List<DepartmentDto> departments;
-    private bool showAddForm = false;
-    private DepartmentDto _newDepartment = new();
-    private bool _isSubmitting = false;
-    private string _message = string.Empty;
-    private bool _isSuccess = false;
+    private List<DepartmentViewModel> departments; // Change from IQueryable to List
 
     protected override async Task OnInitializedAsync()
     {
@@ -98,46 +66,29 @@
 
     private async Task LoadDepartments()
     {
-        departments = await DepartmentService.Get();
+        departments = await DepartmentService.Get(); // Now types match
         StateHasChanged();
     }
 
-    private void ToggleAddForm()
+    private void NavigateToCreate()
     {
-        showAddForm = !showAddForm;
-        if (!showAddForm)
-        {
-            _newDepartment = new DepartmentDto();
-            _message = string.Empty;
-        }
+        NavigationManager.NavigateTo("/departments/create");
     }
 
-    private async Task HandleValidSubmit()
+    private void EditDepartment(int id)
     {
-        _isSubmitting = true;
-        _message = string.Empty;
+        NavigationManager.NavigateTo($"/departments/edit/{id}");
+    }
 
-        try
+    private async Task DeleteDepartment(int id)
+    {
+        //if (await jsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this department?"))
         {
-            var result = await DepartmentService.Post(_newDepartment);
-            _isSuccess = result.Success;
-            _message = result.Message;
-
+            var result = await DepartmentService.Delete(id);
             if (result.Success)
             {
-                _newDepartment = new DepartmentDto();
-                showAddForm = false;
                 await LoadDepartments();
             }
-        }
-        catch (Exception ex)
-        {
-            _isSuccess = false;
-            _message = $"An error occurred: {ex.Message}";
-        }
-        finally
-        {
-            _isSubmitting = false;
         }
     }
 }

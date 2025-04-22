@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using HRLeaveManagement.Application.Response;
 
-namespace HRLeaveManagement.Application.Features.LeaveType.Commands.CreateLeaveType
+namespace HRLeaveManagement.Application.Features.Employee.Commands.CreateEmployee
 {
-    public class CreateLeaveTypeResponse : BaseResponse<LeaveTypeDto>
+    public class CreateEmployeeResponse :BaseResponse<EmployeeDto>
     {
-
+        public int Id;
     }
 }

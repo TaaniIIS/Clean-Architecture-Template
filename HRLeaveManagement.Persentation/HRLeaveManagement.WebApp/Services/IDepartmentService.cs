@@ -1,6 +1,7 @@
 ﻿using HRLeaveManagement.Application.Features.Departments;
 using HRLeaveManagement.Application.Features.Employee;
 using HRLeaveManagement.Application.Response;
+using HRLeaveManagement.WebApp.Model;
 
 namespace HRLeaveManagement.WebApp.Services
 {
@@ -10,21 +11,21 @@ namespace HRLeaveManagement.WebApp.Services
         /// Gets all departments as a list of DepartmentDto objects
         /// </summary>
         /// <returns>List of DepartmentDto</returns>
-        Task<List<DepartmentDto>> Get();
+        Task<List<DepartmentViewModel>> Get();
 
         /// <summary>
         /// Creates a new department
         /// </summary>
         /// <param name="departmentDto">Department data to create</param>
-        /// <returns>BaseResponse containing the created DepartmentDto and status information</returns>
-        Task<BaseResponse<DepartmentDto>> Post(DepartmentDto departmentDto);
+        /// <returns>BaseResponse containing the created DepartmentViewModel and status information</returns>
+        Task<BaseResponse<DepartmentViewModel>> Post(DepartmentViewModel departmentViewModel);
 
         /// <summary>
         /// Gets a specific department by its ID
         /// </summary>
         /// <param name="id">Department ID to retrieve</param>
         /// <returns>BaseResponse containing the DepartmentDto if found</returns>
-        Task<BaseResponse<DepartmentDto>> GetById(int id);
+        Task<DepartmentDto> GetById(int id);
 
         /// <summary>
         /// Updates an existing department
@@ -32,7 +33,7 @@ namespace HRLeaveManagement.WebApp.Services
         /// <param name="id">ID of the department to update</param>
         /// <param name="departmentDto">Updated department data</param>
         /// <returns>BaseResponse containing the updated DepartmentDto</returns>
-        Task<BaseResponse<DepartmentDto>> Update(int id, DepartmentDto departmentDto);
+        Task<BaseResponse<DepartmentDto>> Put(int id, DepartmentDto departmentViewModel);
 
         /// <summary>
         /// Deletes a department by its ID

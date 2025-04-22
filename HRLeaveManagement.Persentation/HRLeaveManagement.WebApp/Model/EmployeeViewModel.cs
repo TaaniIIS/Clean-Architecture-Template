@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HRLeaveManagement.Application.Features.Employee
+﻿namespace HRLeaveManagement.WebApp.Model
 {
-    public class EmployeeDto
+    public class EmployeeViewModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -22,6 +16,5 @@ namespace HRLeaveManagement.Application.Features.Employee
         //       public int? ManagerID { get; set; } // Nullable for top-level employees
         public int LocationID { get; set; }
         public int LeaveTypeID { get; set; }
-
     }
 }
