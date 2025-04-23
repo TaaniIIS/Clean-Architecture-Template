@@ -36,21 +36,14 @@
             else
             {
                 <QuickGrid Items="@departments.AsQueryable()" Class="table table-hover table-striped">
-                    <PropertyColumn Property="@(d => d.Departmentid)" Title="ID" Sortable="true" />
-                    <PropertyColumn Property="@(d => d.Name)" Title="Name" Sortable="true" />
-                    @* <PropertyColumn Property="@(d => d.CreatedDate)" Title="Created Date" Format="dd/MM/yyyy" Sortable="true" /> *@
-
-                    <TemplateColumn Title="Actions">
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-primary" @onclick="() => EditDepartment(context.Departmentid)">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteDepartment(context.Departmentid)">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </TemplateColumn>
-                </QuickGrid>
+    <PropertyColumn Property="@(d => d.Departmentid)" Title="ID" Sortable="true" />
+    <PropertyColumn Property="@(d => d.Name)" Title="Name" Sortable="true" />
+    
+    <TemplateColumn Title="Actions">
+        <button @onclick="() => EditDepartment(d.DepartmentId)" class="btn btn-sm btn-primary">Edit</button>
+        <button @onclick="() => DeleteDepartment(d.DepartmentId)" class="btn btn-sm btn-danger">Delete</button>
+    </TemplateColumn>
+</QuickGrid>
             }
         </div>
     </div>
