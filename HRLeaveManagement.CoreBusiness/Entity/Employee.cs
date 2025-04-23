@@ -20,7 +20,7 @@ namespace HRLeaveManagement.CoreBusiness.Entity
    //     public int TeamID { get; set; }
         public int EmploymentTypeID { get; set; }
  //       public int? ManagerID { get; set; } // Nullable for top-level employees
-        public int LocationID { get; set; }
+    //    public int LocationID { get; set; }
         public int LeaveTypeID { get; set; }
 
         // Navigation Properties
@@ -29,7 +29,7 @@ namespace HRLeaveManagement.CoreBusiness.Entity
      //   public Team? Team { get; set; }
         public EmploymentType? EmploymentType { get; set; }
  //       public Employee? Manager { get; set; }
-        public CompanyLocation? Location { get; set; }
+    //    public CompanyLocation? Location { get; set; }
   //      public ICollection<Employee>? Subordinates { get; set; }
         public ICollection<LeaveRequest>? LeaveRequests { get; set; }
         public ICollection<WorkSchedule>? WorkSchedules { get; set; }

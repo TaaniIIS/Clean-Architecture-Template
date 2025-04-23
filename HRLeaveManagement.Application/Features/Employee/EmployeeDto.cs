@@ -20,7 +20,7 @@ namespace HRLeaveManagement.Application.Features.Employee
         //     public int TeamID { get; set; }
         public int EmploymentTypeID { get; set; }
         //       public int? ManagerID { get; set; } // Nullable for top-level employees
-        public int LocationID { get; set; }
+     //   public int LocationID { get; set; }
         public int LeaveTypeID { get; set; }
 
     }
