@@ -14,16 +14,72 @@ namespace HRLeaveManagement.WebApp.Services
         }
         public async Task<List<EmployeeViewModel>> Get()
         {
+            //try
+            //{
+            //    // /api/Employee/GetEmployee
+            //    return await _httpClient.GetFromJsonAsync<List<EmployeeViewModel>>("/api/Employee/GetEmployee");
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Error fetching employees: {ex.Message}");
+            //    return new List<EmployeeViewModel>();
+            //}
+
+
             try
             {
-                return await _httpClient.GetFromJsonAsync<List<EmployeeViewModel>>("/api/Employee");
+                // Get employees and departments
+                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeViewModel>>("/api/Employee/GetEmployee");
+                var departments = await _httpClient.GetFromJsonAsync<List<DepartmentViewModel>>("/api/Department/GetDepartment");
+                var positions = await _httpClient.GetFromJsonAsync<List<PositionViewModel>>("/api/Position/GetPosition");
+               // var leaveTypes = await _httpClient.GetFromJsonAsync<List<LeaveTypeViewModel>>("/api/LeaveType");
+               var employmentTypes = await _httpClient.GetFromJsonAsync<List<EmploymentTypeViewModel>>("/api/EmploymentTypes");
 
+
+                // Join them to get department names
+                var result = employees.Select(e => new EmployeeViewModel
+                {
+                    EmployeeID = e.EmployeeID,
+                    FirstName = e.FirstName,
+                    LastName = e.LastName,
+                    Email = e.Email,
+                    DepartmentID = e.DepartmentID,
+                    DepartmentName = departments.FirstOrDefault(d => d.Departmentid == e.DepartmentID)?.Name ?? "N/A",
+                    PositionID = e.PositionID,
+                    
+                    PositionName = positions.FirstOrDefault(p => p.PositionId == e.PositionID)?.Title ?? "N/A",
+                    JobLevel = positions.FirstOrDefault(p => p.PositionId == e.PositionID)?.JobLevel ?? "N/A",
+                    Shift =employmentTypes.FirstOrDefault(p => p.Id == e.EmploymentTypeID)?.Name ?? "N/A",
+
+
+                }).ToList();
+
+
+
+
+                //var result = employees.Select(e => new EmployeeViewModel
+                //{
+                //    EmployeeID = e.EmployeeID,
+                //    FirstName = e.FirstName,
+                //    LastName = e.LastName,
+                //    Email = e.Email,
+                //    DepartmentID = e.DepartmentID,
+                //    DepartmentName = departments.FirstOrDefault(d => d.Departmentid == e.DepartmentID)?.Name ?? "N/A"
+                //}).ToList();
+
+                return result;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching employees: {ex.Message}");
+                Console.WriteLine($"Error fetching employees with departments: {ex.Message}");
                 return new List<EmployeeViewModel>();
             }
+
+
+
+
+
         }
         public async Task<EmployeeViewModel> GetById(int id)
         {
