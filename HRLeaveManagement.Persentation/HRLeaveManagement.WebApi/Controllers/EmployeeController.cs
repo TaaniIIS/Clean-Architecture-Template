@@ -44,10 +44,5 @@ namespace HRLeaveManagement.WebApi.Controllers
         //    var result = await Mediator.Send(new UpdateEmployeeCommand() { Id = id, UpdateEmployee = commad });
         //    return Ok(result);
         //}
-
-
-
-
-
     }
 }

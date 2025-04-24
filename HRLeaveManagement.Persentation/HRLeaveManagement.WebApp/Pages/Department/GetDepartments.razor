@@ -40,8 +40,8 @@
     <PropertyColumn Property="@(d => d.Name)" Title="Name" Sortable="true" />
     
     <TemplateColumn Title="Actions">
-        <button @onclick="() => EditDepartment(d.DepartmentId)" class="btn btn-sm btn-primary">Edit</button>
-        <button @onclick="() => DeleteDepartment(d.DepartmentId)" class="btn btn-sm btn-danger">Delete</button>
+        <button @onclick="() => EditDepartment(context.Departmentid)" class="btn btn-sm btn-primary">Edit</button>
+        <button @onclick="() => DeleteDepartment(context.Departmentid)" class="btn btn-sm btn-danger">Delete</button>
     </TemplateColumn>
 </QuickGrid>
             }
