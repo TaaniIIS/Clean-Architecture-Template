@@ -30,12 +30,13 @@ namespace HRLeaveManagement.Infrastructure.Extensions
     // Optional: You could enable retry logic like below if needed.
     // o => o.EnableRetryOnFailure()
     );
-
+            //Roda axmed daahir
             // Registers the generic repository so it can be injected as IRepository<T>.
             // AddScoped means a new instance is created per HTTP request.
             // Whenever IRepository<T> is requested, the app will inject Repository<T>.
             service.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             service.AddTransient<IEmployeeRepository, DepartmentEmployeesRepository>();
+           //service.AddTransient<IEmployeeService, EmployeeService>();
 
             // Returns the modified IServiceCollection so the caller can continue chaining other service registrations.
             return service;

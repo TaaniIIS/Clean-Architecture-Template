@@ -4,6 +4,7 @@ using HRLeaveManagement.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRLeaveManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250424082646_tbl_Comp_drop_locationid")]
+    partial class tbl_Comp_drop_locationid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,9 +71,6 @@ namespace HRLeaveManagement.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeID"));
 
-                    b.Property<int?>("CompanyLocationId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DepartmentID")
                         .HasColumnType("int");
 
@@ -92,19 +92,16 @@ namespace HRLeaveManagement.Infrastructure.Migrations
                     b.Property<int>("LocationID")
                         .HasColumnType("int");
 
-                    b.Property<int>("LocationID")
-                        .HasColumnType("int");
-
                     b.Property<int>("PositionID")
                         .HasColumnType("int");
 
                     b.HasKey("EmployeeID");
 
-                    b.HasIndex("CompanyLocationId");
-
                     b.HasIndex("DepartmentID");
 
                     b.HasIndex("EmploymentTypeID");
+
+                    b.HasIndex("LocationID");
 
                     b.HasIndex("PositionID");
 
@@ -234,10 +231,6 @@ namespace HRLeaveManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.Employee", b =>
                 {
-                    b.HasOne("HRLeaveManagement.CoreBusiness.Entity.CompanyLocation", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("CompanyLocationId");
-
                     b.HasOne("HRLeaveManagement.CoreBusiness.Entity.Department", "Department")
                         .WithMany("Employees")
                         .HasForeignKey("DepartmentID")
@@ -250,6 +243,12 @@ namespace HRLeaveManagement.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HRLeaveManagement.CoreBusiness.Entity.CompanyLocation", "Location")
+                        .WithMany("Employees")
+                        .HasForeignKey("LocationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HRLeaveManagement.CoreBusiness.Entity.Position", "Position")
                         .WithMany("Employees")
                         .HasForeignKey("PositionID")
@@ -259,6 +258,8 @@ namespace HRLeaveManagement.Infrastructure.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("EmploymentType");
+
+                    b.Navigation("Location");
 
                     b.Navigation("Position");
                 });

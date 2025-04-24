@@ -31,7 +31,7 @@ namespace HRLeaveManagement.CoreBusiness.Entity
  //       public Employee? Manager { get; set; }
     //    public CompanyLocation? Location { get; set; }
   //      public ICollection<Employee>? Subordinates { get; set; }
-        public ICollection<LeaveRequest>? LeaveRequests { get; set; }
+      //  public ICollection<LeaveRequest>? LeaveRequests { get; set; }
         public ICollection<WorkSchedule>? WorkSchedules { get; set; }
     }
 }
