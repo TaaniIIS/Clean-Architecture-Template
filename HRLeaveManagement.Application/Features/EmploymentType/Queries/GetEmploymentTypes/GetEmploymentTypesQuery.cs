@@ -8,7 +8,7 @@ using MediatR;
 
 namespace HRLeaveManagement.Application.Features.EmploymentType.Queries.GetEmploymentTypes
 {
-    public sealed record GetEmploymentTypesQuery : IRequest<BaseResponse<List<EmploymentTypeDto>>>
+    public class GetEmploymentTypesQuery : IRequest<BaseResponse<List<ShiftDto>>>
     {
 
     }

@@ -22,27 +22,6 @@ namespace HRLeaveManagement.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.CompanyLocation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CompanyLocations");
-                });
-
             modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.Department", b =>
                 {
                     b.Property<int>("DepartmentID")
@@ -50,6 +29,13 @@ namespace HRLeaveManagement.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentID"));
+
+                    b.Property<DateOnly>("CreatedDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -68,18 +54,12 @@ namespace HRLeaveManagement.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeID"));
 
-                    b.Property<int?>("CompanyLocationId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DepartmentID")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("EmploymentTypeID")
-                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -89,43 +69,26 @@ namespace HRLeaveManagement.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LocationID")
+                    b.Property<int>("LeaveTypeID")
                         .HasColumnType("int");
 
-                    b.Property<int>("LocationID")
+                    b.Property<int>("Phone")
                         .HasColumnType("int");
 
                     b.Property<int>("PositionID")
                         .HasColumnType("int");
 
+                    b.Property<string>("Shift")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("EmployeeID");
 
-                    b.HasIndex("CompanyLocationId");
-
                     b.HasIndex("DepartmentID");
-
-                    b.HasIndex("EmploymentTypeID");
 
                     b.HasIndex("PositionID");
 
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.EmploymentType", b =>
-                {
-                    b.Property<int>("EmploymentTypeID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmploymentTypeID"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("EmploymentTypeID");
-
-                    b.ToTable("EmploymentTypes");
                 });
 
             modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.LeaveRequest", b =>
@@ -234,19 +197,9 @@ namespace HRLeaveManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.Employee", b =>
                 {
-                    b.HasOne("HRLeaveManagement.CoreBusiness.Entity.CompanyLocation", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("CompanyLocationId");
-
                     b.HasOne("HRLeaveManagement.CoreBusiness.Entity.Department", "Department")
                         .WithMany("Employees")
                         .HasForeignKey("DepartmentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HRLeaveManagement.CoreBusiness.Entity.EmploymentType", "EmploymentType")
-                        .WithMany("Employees")
-                        .HasForeignKey("EmploymentTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -258,15 +211,13 @@ namespace HRLeaveManagement.Infrastructure.Migrations
 
                     b.Navigation("Department");
 
-                    b.Navigation("EmploymentType");
-
                     b.Navigation("Position");
                 });
 
             modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.LeaveRequest", b =>
                 {
                     b.HasOne("HRLeaveManagement.CoreBusiness.Entity.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("LeaveRequests")
                         .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -293,11 +244,6 @@ namespace HRLeaveManagement.Infrastructure.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.CompanyLocation", b =>
-                {
-                    b.Navigation("Employees");
-                });
-
             modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.Department", b =>
                 {
                     b.Navigation("Employees");
@@ -305,12 +251,9 @@ namespace HRLeaveManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.Employee", b =>
                 {
-                    b.Navigation("WorkSchedules");
-                });
+                    b.Navigation("LeaveRequests");
 
-            modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.EmploymentType", b =>
-                {
-                    b.Navigation("Employees");
+                    b.Navigation("WorkSchedules");
                 });
 
             modelBuilder.Entity("HRLeaveManagement.CoreBusiness.Entity.LeaveType", b =>

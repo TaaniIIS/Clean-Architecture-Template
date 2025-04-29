@@ -12,20 +12,20 @@ using MediatR;
 
 namespace HRLeaveManagement.Application.Features.EmploymentType.Queries.GetEmploymentTypes
 {
-    public class GetEmploymentTypesQueryHandler : IRequestHandler<GetEmploymentTypesQuery, BaseResponse<List<EmploymentTypeDto>>>
+    public class GetEmploymentTypesQueryHandler : IRequestHandler<GetEmploymentTypesQuery, BaseResponse<List<ShiftDto>>>
     {
-        private readonly IRepository<HRLeaveManagement.CoreBusiness.Entity.EmploymentType> _repository;
+        private readonly IRepository<HRLeaveManagement.CoreBusiness.Entity.Shift> _repository;
 
         private readonly IMapper _mapper;
 
         public GetEmploymentTypesQueryHandler(
-            IRepository<HRLeaveManagement.CoreBusiness.Entity.EmploymentType> repository,
+            IRepository<HRLeaveManagement.CoreBusiness.Entity.Shift> repository,
             IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
-        public async Task<BaseResponse<List<EmploymentTypeDto>>> Handle(GetEmploymentTypesQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<List<ShiftDto>>> Handle(GetEmploymentTypesQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -33,15 +33,15 @@ namespace HRLeaveManagement.Application.Features.EmploymentType.Queries.GetEmplo
                 var EmploymentType = await _repository.GetAllAsync();
 
                 // Map entity list to DTO list
-                var positionDtos = _mapper.Map<List<EmploymentTypeDto>>(EmploymentType);
+                var positionDtos = _mapper.Map<List<ShiftDto>>(EmploymentType);
 
                 // Return result with mapped data
-                return BaseResponse<List<EmploymentTypeDto>>.SuccessResult("EmploymentType retrieved successfully.", positionDtos);
+                return BaseResponse<List<ShiftDto>>.SuccessResult("EmploymentType retrieved successfully.", positionDtos);
             }
             catch (Exception ex)
             {
                 //_logger.LogError("Error retrieving all positions: {Message}", ex.Message);
-                return BaseResponse<List<EmploymentTypeDto>>.FailureResult("An error occurred while retrieving EmploymentType.");
+                return BaseResponse<List<ShiftDto>>.FailureResult("An error occurred while retrieving EmploymentType.");
             }
 
 

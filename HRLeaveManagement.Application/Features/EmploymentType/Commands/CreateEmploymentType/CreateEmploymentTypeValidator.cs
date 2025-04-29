@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
-using static HRLeaveManagement.CoreBusiness.Entity.EmploymentType;
+using static HRLeaveManagement.CoreBusiness.Entity.Shift;
 
 namespace HRLeaveManagement.Application.Features.EmploymentType.Commands.CreateEmploymentType
 {
@@ -12,13 +12,13 @@ namespace HRLeaveManagement.Application.Features.EmploymentType.Commands.CreateE
     {
         public CreateEmploymentTypeValidator()
         {
+            ////RuleFor(x => x.Type)
+            ////    .IsInEnum() // Ensures only valid enum values
+            ////    .WithMessage("Invalid employment type");
             //RuleFor(x => x.Type)
-            //    .IsInEnum() // Ensures only valid enum values
-            //    .WithMessage("Invalid employment type");
-            RuleFor(x => x.Type)
-            .Must(x => Enum.IsDefined(typeof(EmploymentTypeEnum), x))
-            .WithMessage("Invalid employment type. Valid options are: " +
-                string.Join(", ", Enum.GetNames(typeof(EmploymentTypeEnum))));
+            //.Must(x => Enum.IsDefined(typeof(ShiftDto), x))
+            //.WithMessage("Invalid employment type. Valid options are: " +
+            //    string.Join(", ", Enum.GetNames(typeof(ShiftDto))));
         }
     }
 }

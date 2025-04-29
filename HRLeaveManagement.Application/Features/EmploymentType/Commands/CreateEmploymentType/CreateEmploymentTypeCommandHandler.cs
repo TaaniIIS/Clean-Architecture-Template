@@ -7,40 +7,40 @@ using HRLeaveManagement.Application.Interfaces;
 using HRLeaveManagement.Application.Response;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using static HRLeaveManagement.CoreBusiness.Entity.EmploymentType;
+using static HRLeaveManagement.CoreBusiness.Entity.Shift;
 
 namespace HRLeaveManagement.Application.Features.EmploymentType.Commands.CreateEmploymentType
 {
-    public class CreateEmploymentTypeCommandHandler : IRequestHandler<CreateEmploymentTypeCommand, BaseResponse<int>>
+    public class CreateEmploymentTypeCommandHandler : IRequestHandler<CreateEmploymentTypeCommand, BaseResponse<ShiftDto>>
     {
-        private readonly IRepository<HRLeaveManagement.CoreBusiness.Entity.EmploymentType> _repository;
+        private readonly IRepository<HRLeaveManagement.CoreBusiness.Entity.Shift> _repository;
         private readonly ILogger<CreateEmploymentTypeCommand> _logger;
-        public CreateEmploymentTypeCommandHandler(IRepository<HRLeaveManagement.CoreBusiness.Entity.EmploymentType> repository,ILogger<CreateEmploymentTypeCommand> logger )
+        public CreateEmploymentTypeCommandHandler(IRepository<HRLeaveManagement.CoreBusiness.Entity.Shift> repository,ILogger<CreateEmploymentTypeCommand> logger )
         {
             _repository = repository;
             _logger = logger;
         }
-        public async Task<BaseResponse<int>> Handle(
+        public async Task<BaseResponse<ShiftDto>> Handle(
                 CreateEmploymentTypeCommand request,
                 CancellationToken cancellationToken)
         {
-            var response = new BaseResponse<int>();
+            var response = new BaseResponse<ShiftDto>();
 
             try
             {
                 // Validate enum value
-                if (!Enum.IsDefined(typeof(EmploymentTypeEnum), request.Type))
-                {
-                    response.Success = false;
-                    response.Message = $"Invalid employment type. Valid options are between type  1 and 3:";  // {string.Join(", ", Enum.GetNames(typeof(EmploymentTypeEnum))}";
-                    response.ValidationErrors = new List<string> { response.Message };
-                    return response;
-                }
+                //if (!Enum.IsDefined(typeof(ShiftDto), request.Type))
+                //{
+                //    response.Success = false;
+                //    response.Message = $"Invalid employment type. Valid options are between type  1 and 3:";  // {string.Join(", ", Enum.GetNames(typeof(EmploymentTypeEnum))}";
+                //    response.ValidationErrors = new List<string> { response.Message };
+                //    return response;
+                //}
 
-                var employmentType = new HRLeaveManagement.CoreBusiness.Entity.EmploymentType { Type = request.Type };
+                var employmentType = new HRLeaveManagement.CoreBusiness.Entity.Shift {};
                 await _repository.AddAsync(employmentType);
 
-                response.Data = employmentType.EmploymentTypeID;
+              //  response.Data = employmentType.Shifts;
                 response.Success = true;
                 response.Message = "Position created successfully";
 

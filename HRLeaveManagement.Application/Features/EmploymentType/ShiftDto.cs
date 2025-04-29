@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HRLeaveManagement.Application.Features.EmploymentType
 {
-    public class EmploymentTypeDto
+    public class ShiftDto
     {
         public int Id { get; set; }
-        public string Name { get; set; } // Auto-maps from enum
+        public string Shift { get; set; } // Auto-maps from enum
     }
 }

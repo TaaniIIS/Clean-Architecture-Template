@@ -11,10 +11,9 @@ namespace HRLeaveManagement.CoreBusiness.Entity
     {
         public int DepartmentID { get; set; }
         public string Name { get; set; }
-        //public DateTime CreatedDate { get; set; }
 
-        // Navigation Properties
-        // public ICollection<Team> Teams { get; set; }
+        public string Description { get; set; }
+        public DateOnly CreatedDate { get; set; }
         public ICollection<Employee> Employees { get; set; }
     }
 }

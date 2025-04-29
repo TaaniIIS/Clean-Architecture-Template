@@ -29,10 +29,11 @@ namespace HRLeaveManagement.Application.Profiles
             CreateMap<Employee,EmployeeDto>() .ReverseMap();
             //CreateMap<Department,EmployeeDepartmentDto>() .ReverseMap();
             CreateMap<Department, DepartmentDto>().ReverseMap();
-            CreateMap<EmploymentType, EmploymentTypeDto>().ReverseMap();
+            CreateMap<Shift, ShiftDto>().ReverseMap()
+            .ForMember(dest => dest.ShiftId, opt => opt.MapFrom(src => src.Id));
             CreateMap<LeaveType, LeaveTypeDto>().ReverseMap();
             // Optional: You can customize mappings like this if property names don't match:
-            // .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+            // 
         }
     }
 

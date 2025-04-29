@@ -10,7 +10,7 @@ namespace HRLeaveManagement.Application.Features.Departments
     {
         public int Departmentid { get; set; }
         public string Name { get; set; }
-        //public DateTime CreatedDate { get; set; } = DateTime.Now;
-
+        public string Description { get; set; }
+        public DateOnly CreatedDate { get; set; }
     }
 }

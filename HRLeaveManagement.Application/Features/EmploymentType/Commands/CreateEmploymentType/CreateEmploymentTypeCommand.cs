@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using HRLeaveManagement.Application.Response;
 using MediatR;
-using static HRLeaveManagement.CoreBusiness.Entity.EmploymentType;
+using static HRLeaveManagement.CoreBusiness.Entity.Shift;
 
 namespace HRLeaveManagement.Application.Features.EmploymentType.Commands.CreateEmploymentType
 {
-    public sealed record CreateEmploymentTypeCommand : IRequest<BaseResponse<int>>
+    public class CreateEmploymentTypeCommand : IRequest<BaseResponse<ShiftDto>>
     {
-        public EmploymentTypeEnum Type { get; set; } // Only accepts enum values
+        public ShiftDto Type { get; set; } // Only accepts enum values
     }
 }

@@ -28,7 +28,7 @@ namespace HRLeaveManagement.Infrastructure
         public DbSet<Department> Departments { get; set; }
         //public DbSet<Team> Teams { get; set; }
         public DbSet<Position> Positions { get; set; }
-        public DbSet<EmploymentType> EmploymentTypes { get; set; }
+       // public DbSet<Shift> shifts { get; set; }
         public DbSet<WorkSchedule> WorkSchedules { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }

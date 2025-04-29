@@ -4,7 +4,7 @@ using HRLeaveManagement.Application.Features.EmploymentType.Commands.CreateEmplo
 using HRLeaveManagement.Application.Features.EmploymentType.Queries.GetEmploymentTypes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static HRLeaveManagement.CoreBusiness.Entity.EmploymentType;
+using static HRLeaveManagement.CoreBusiness.Entity.Shift;
 
 namespace HRLeaveManagement.WebApi.Controllers
 {
@@ -13,7 +13,7 @@ namespace HRLeaveManagement.WebApi.Controllers
     public class EmploymentTypesController : ApiController
     {
         [HttpGet]
-        [ProducesResponseType(typeof(List<EmploymentTypeDto>), 200)]
+        [ProducesResponseType(typeof(List<ShiftDto>), 200)]
         public async Task<IActionResult> GetAll()
         {
             var result = await Mediator.Send(new GetEmploymentTypesQuery());

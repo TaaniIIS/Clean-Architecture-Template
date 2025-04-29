@@ -6,49 +6,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HRLeaveManagement.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial_Migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "CompanyLocations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompanyLocations", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Departments",
                 columns: table => new
                 {
                     DepartmentID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateOnly>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Departments", x => x.DepartmentID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmploymentTypes",
-                columns: table => new
-                {
-                    EmploymentTypeID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmploymentTypes", x => x.EmploymentTypeID);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,32 +64,20 @@ namespace HRLeaveManagement.Infrastructure.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Shift = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<int>(type: "int", nullable: false),
                     PositionID = table.Column<int>(type: "int", nullable: false),
                     DepartmentID = table.Column<int>(type: "int", nullable: false),
-                    EmploymentTypeID = table.Column<int>(type: "int", nullable: false),
-                    LocationID = table.Column<int>(type: "int", nullable: false),
                     LeaveTypeID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.EmployeeID);
                     table.ForeignKey(
-                        name: "FK_Employees_CompanyLocations_LocationID",
-                        column: x => x.LocationID,
-                        principalTable: "CompanyLocations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Employees_Departments_DepartmentID",
                         column: x => x.DepartmentID,
                         principalTable: "Departments",
                         principalColumn: "DepartmentID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Employees_EmploymentTypes_EmploymentTypeID",
-                        column: x => x.EmploymentTypeID,
-                        principalTable: "EmploymentTypes",
-                        principalColumn: "EmploymentTypeID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Employees_Positions_PositionID",
@@ -130,6 +93,8 @@ namespace HRLeaveManagement.Infrastructure.Migrations
                 {
                     LeaveRequestID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LeaveAmount = table.Column<int>(type: "int", nullable: false),
                     EmployeeID = table.Column<int>(type: "int", nullable: false),
@@ -179,16 +144,6 @@ namespace HRLeaveManagement.Infrastructure.Migrations
                 column: "DepartmentID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_EmploymentTypeID",
-                table: "Employees",
-                column: "EmploymentTypeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_LocationID",
-                table: "Employees",
-                column: "LocationID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Employees_PositionID",
                 table: "Employees",
                 column: "PositionID");
@@ -225,13 +180,7 @@ namespace HRLeaveManagement.Infrastructure.Migrations
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "CompanyLocations");
-
-            migrationBuilder.DropTable(
                 name: "Departments");
-
-            migrationBuilder.DropTable(
-                name: "EmploymentTypes");
 
             migrationBuilder.DropTable(
                 name: "Positions");
