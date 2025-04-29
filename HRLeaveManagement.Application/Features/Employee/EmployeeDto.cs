@@ -17,7 +17,7 @@ namespace HRLeaveManagement.Application.Features.Employee
         public int Phone { get; set; }
         //  public string Title { get; set; }
 
-        public int phone { get; set; }
+    //    public int phone { get; set; }
 
         public int PositionID { get; set; }
         public int DepartmentID { get; set; }
