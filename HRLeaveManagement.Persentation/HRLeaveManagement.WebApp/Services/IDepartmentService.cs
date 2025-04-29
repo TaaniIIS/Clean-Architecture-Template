@@ -25,7 +25,7 @@ namespace HRLeaveManagement.WebApp.Services
         /// </summary>
         /// <param name="id">Department ID to retrieve</param>
         /// <returns>BaseResponse containing the DepartmentDto if found</returns>
-        Task<DepartmentDto> GetById(int id);
+        Task<DepartmentViewModel> GetById(int id);
 
         /// <summary>
         /// Updates an existing department
@@ -33,7 +33,7 @@ namespace HRLeaveManagement.WebApp.Services
         /// <param name="id">ID of the department to update</param>
         /// <param name="departmentDto">Updated department data</param>
         /// <returns>BaseResponse containing the updated DepartmentDto</returns>
-        Task<BaseResponse<DepartmentDto>> Put(int id, DepartmentDto departmentViewModel);
+        Task<BaseResponse<DepartmentViewModel>> Put(int id, DepartmentViewModel departmentViewModel);
 
         /// <summary>
         /// Deletes a department by its ID
@@ -47,7 +47,7 @@ namespace HRLeaveManagement.WebApp.Services
         /// </summary>
         /// <param name="departmentId">Department ID to filter employees</param>
         /// <returns>List of EmployeeDto objects in the department</returns>
-        Task<List<EmployeeDto>> GetEmployeesByDepartment(int departmentId);
+        Task<List<DepartmentViewModel>> GetEmployeesByDepartment(int departmentId);
 
         /// <summary>
         /// Checks if a department with the given name already exists

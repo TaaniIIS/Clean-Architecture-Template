@@ -36,16 +36,16 @@ namespace HRLeaveManagement.WebApp.Services
             }
         }
 
-        public Task<DepartmentDto> GetById(int id)
+        public Task<DepartmentViewModel> GetById(int id)
         {
             try
             {
-                return _http.GetFromJsonAsync<DepartmentDto>($"/api/Department/{id}");
+                return _http.GetFromJsonAsync<DepartmentViewModel>($"/api/Department/{id}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error fetching department by ID: {ex.Message}");
-                return Task.FromResult<DepartmentDto>(null);
+                return Task.FromResult<DepartmentViewModel>(null);
             }
         }
 
@@ -72,17 +72,17 @@ namespace HRLeaveManagement.WebApp.Services
             }
         }
 
-        public Task<BaseResponse<DepartmentDto>> Put(int id, DepartmentDto departmentViewModel)
+        public Task<BaseResponse<DepartmentViewModel>> Put(int id, DepartmentViewModel departmentViewModel)
         {
             var response = _http.PutAsJsonAsync($"/api/Department/{id}", departmentViewModel);
             if (response.Result.IsSuccessStatusCode)
             {
-                return response.Result.Content.ReadFromJsonAsync<BaseResponse<DepartmentDto>>();
+                return response.Result.Content.ReadFromJsonAsync<BaseResponse<DepartmentViewModel>>();
             }
             else
             {
                 var errorContent = response.Result.Content.ReadAsStringAsync();
-                return Task.FromResult(new BaseResponse<DepartmentDto>
+                return Task.FromResult(new BaseResponse<DepartmentViewModel>
                 {
                     Success = false,
                     Message = $"API Error: {response.Result.StatusCode} - {errorContent}"
@@ -121,7 +121,7 @@ namespace HRLeaveManagement.WebApp.Services
                 return Task.FromResult(false);
             }
         }
-        public Task<List<EmployeeDto>> GetEmployeesByDepartment(int departmentId)
+        public Task<List<DepartmentViewModel>> GetEmployeesByDepartment(int departmentId)
         {
             throw new NotImplementedException();
         }

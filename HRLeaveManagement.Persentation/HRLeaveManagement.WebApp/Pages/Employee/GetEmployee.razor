@@ -39,7 +39,9 @@
                     <PropertyColumn Property="@(e => e.FirstName)" Title="First Name" Sortable="true" />
                     <PropertyColumn Property="@(e => e.LastName)" Title="Last Name" Sortable="true" />
                     <PropertyColumn Property="@(e => e.Email)" Title="Email" Sortable="true" />
-                    <PropertyColumn Property="@(e => e.DepartmentName)" Title="Department" Sortable="true" />
+                    <PropertyColumn Property="@(e => e.Shift)" Title="Department" Sortable="true" />
+                    <PropertyColumn Property="@(e => e.Phone)" Title="Department" Sortable="true" />
+
                     @* <PropertyColumn Property="@(e => e.PositionName)" Title="Department" Sortable="true" /> *@
 
 
@@ -47,14 +49,9 @@
                     <TemplateColumn Title="Position">
                         @context.PositionName <!-- Will replace with actual position name later -->
                     </TemplateColumn>
-                    <!-- Add additional columns for related entities -->
-                    <TemplateColumn Title="job">
-                        @context.JobLevel <!-- Will replace with actual position name later -->
-                    </TemplateColumn>
 
-
-                    <TemplateColumn Title="Shift">
-                        @context.Shift <!-- Will replace with actual type name later -->
+                    <TemplateColumn Title="Department">
+                        @context.Department <!-- Will replace with actual type name later -->
                     </TemplateColumn>
 
                     <TemplateColumn Title="Actions">

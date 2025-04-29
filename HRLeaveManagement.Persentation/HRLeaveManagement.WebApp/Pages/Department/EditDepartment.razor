@@ -47,6 +47,18 @@
                                            class="form-control" />
                                 <ValidationMessage For="@(() => _department.Name)" class="text-danger small" />
                             </div>
+                             <div class="mb-3">
+                                <label class="form-label">Department Description *</label>
+                                <InputText @bind-Value="_department.Description"
+                                           class="form-control" />
+                                <ValidationMessage For="@(() => _department.Description)" class="text-danger small" />
+                            </div>
+                             <div class="mb-3">
+                                <label class="form-label">Department CreatedDate *</label>
+                                <InputDate @bind-Value="_department.CreatedDate"
+                                           class="form-control" />
+                                <ValidationMessage For="@(() => _department.CreatedDate)" class="text-danger small" />
+                            </div>
 
                             <div class="d-flex justify-content-end gap-2 mt-4">
                                 <button type="button" class="btn btn-outline-secondary" @onclick="NavigateToList"
@@ -79,7 +91,7 @@
     [Parameter]
     public int DepartmentId { get; set; }
 
-    private DepartmentDto _department = new();
+    private DepartmentViewModel _department = new();
     private bool _isLoading = true;
     private bool _isSaving = false;
     private string _errorMessage = string.Empty;

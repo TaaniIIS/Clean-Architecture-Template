@@ -73,6 +73,10 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 //builder.Services.AddInfrastructure(builder.Configuration);
 
+
+
+
+
 // Add CORS (before app.MapControllers())
 builder.Services.AddCors(options =>
 {

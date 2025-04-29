@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HRLeaveManagement.Application.Interfaces;
 using HRLeaveManagement.Application.Response;
+using HRLeaveManagement.CoreBusiness.Entity;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using static HRLeaveManagement.CoreBusiness.Entity.EmploymentType;
@@ -37,7 +38,7 @@ namespace HRLeaveManagement.Application.Features.EmploymentType.Commands.CreateE
                     return response;
                 }
 
-                var employmentType = new HRLeaveManagement.CoreBusiness.Entity.EmploymentType { Type = request.Type };
+                var employmentType = new HRLeaveManagement.CoreBusiness.Entity.EmploymentType {};
                 await _repository.AddAsync(employmentType);
 
                 response.Data = employmentType.EmploymentTypeID;

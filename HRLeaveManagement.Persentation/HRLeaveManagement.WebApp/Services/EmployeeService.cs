@@ -33,9 +33,7 @@ namespace HRLeaveManagement.WebApp.Services
                 var employees = await _httpClient.GetFromJsonAsync<List<EmployeeViewModel>>("/api/Employee/GetEmployee");
                 var departments = await _httpClient.GetFromJsonAsync<List<DepartmentViewModel>>("/api/Department/GetDepartment");
                 var positions = await _httpClient.GetFromJsonAsync<List<PositionViewModel>>("/api/Position/GetPosition");
-               // var leaveTypes = await _httpClient.GetFromJsonAsync<List<LeaveTypeViewModel>>("/api/LeaveType");
-               var employmentTypes = await _httpClient.GetFromJsonAsync<List<EmploymentTypeViewModel>>("/api/EmploymentTypes");
-
+             
 
                 // Join them to get department names
                 var result = employees.Select(e => new EmployeeViewModel
@@ -49,9 +47,6 @@ namespace HRLeaveManagement.WebApp.Services
                     PositionID = e.PositionID,
                     
                     PositionName = positions.FirstOrDefault(p => p.PositionId == e.PositionID)?.Title ?? "N/A",
-                    JobLevel = positions.FirstOrDefault(p => p.PositionId == e.PositionID)?.JobLevel ?? "N/A",
-                    Shift =employmentTypes.FirstOrDefault(p => p.Id == e.EmploymentTypeID)?.Name ?? "N/A",
-
 
                 }).ToList();
 

@@ -39,6 +39,10 @@
               <QuickGrid Items="@departments.AsQueryable()" Class="table table-hover table-striped">
     <PropertyColumn Property="@(d => d.Departmentid)" Title="ID" Sortable="true" />
     <PropertyColumn Property="@(d => d.Name)" Title="Name" Sortable="true" />
+    <PropertyColumn Property="@(d => d.Description)" Title="Description" Sortable="true" />
+    <PropertyColumn Property="@(d => d.CreatedDate)" Title="Created Date" Sortable="true" />
+
+
 
                     <TemplateColumn Title="Actions">
                         <button @onclick="() => EditDepartment(context.Departmentid)"

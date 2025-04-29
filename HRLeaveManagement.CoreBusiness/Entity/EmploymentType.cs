@@ -13,28 +13,15 @@ namespace HRLeaveManagement.CoreBusiness.Entity
 {
     public class EmploymentType
     {
-        
         public int EmploymentTypeID { get; set; }
         public string Name { get; set; } // Full-time, Part-time, etc.
-                                         // Navigation Property
+
+        // Navigation Property
         public ICollection<Employee> Employees { get; set; }
 
-        public enum EmploymentTypeEnum
-        {
-            [Display(Name = "Full-time Employment")]
-            FullTime = 1,
-            [Display(Name = "Part-time Employment")]
-            PartTime = 2,
-            [Display(Name = "Contractor Employment")]
-            Contractor = 3
-            // Add others if needed
-        }
-
-
-        // Enum property (not mapped to database)
-
+        // Move the enum outside the class
         [NotMapped]
-        public EmploymentTypeEnum Type
+        public EmploymentTypeEnum TypeEnum
         {
             get => Name switch
             {
@@ -45,5 +32,16 @@ namespace HRLeaveManagement.CoreBusiness.Entity
             };
             set => Name = value.ToString();
         }
+    }
+
+    // Move enum outside the class
+    public enum EmploymentTypeEnum
+    {
+        [Display(Name = "Full-time Employment")]
+        FullTime = 1,
+        [Display(Name = "Part-time Employment")]
+        PartTime = 2,
+        [Display(Name = "Contractor Employment")]
+        Contractor = 3
     }
 }
