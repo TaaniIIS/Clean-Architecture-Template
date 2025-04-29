@@ -47,10 +47,6 @@
                     <TemplateColumn Title="Position">
                         @context.PositionName <!-- Will replace with actual position name later -->
                     </TemplateColumn>
-                    <!-- Add additional columns for related entities -->
-                    <TemplateColumn Title="job">
-                        @context.JobLevel <!-- Will replace with actual position name later -->
-                    </TemplateColumn>
 
                     <TemplateColumn Title="Actions">
                         <button @onclick="() => EditEmployee(context.EmployeeID)"

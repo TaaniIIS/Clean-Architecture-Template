@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HRLeaveManagement.Application.Response;
+using HRLeaveManagement.CoreBusiness.Entity;
 using MediatR;
 using static HRLeaveManagement.CoreBusiness.Entity.Shift;
 

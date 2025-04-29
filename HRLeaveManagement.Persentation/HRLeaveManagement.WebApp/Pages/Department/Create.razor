@@ -31,6 +31,23 @@
                                        class="form-control" placeholder="e.g., Human Resources" />
                             <ValidationMessage For="@(() => _department.Name)" class="text-danger small" />
                         </div>
+                        <div class="mb-3">
+                            <label for="Description" class="form-label">Department Description *</label>
+                            <InputText id="Description" @bind-Value="_department.Description"
+                                       class="form-control" placeholder="e.g., Human Resources" />
+                            <ValidationMessage For="@(() => _department.Description)" class="text-danger small" />
+                        </div>
+
+                        <div class="mb-3">
+                        <label for="CreatedDate" class="form-label">Created Date *</label>
+                        <InputDate id="CreatedDate" 
+                                   @bind-Value="_department.CreatedDate"
+                                   class="form-control"
+                                   placeholder="yyyy-MM-dd"
+                                   format="yyyy-MM-dd" />
+                        <ValidationMessage For="@(() => _department.CreatedDate)" 
+                                          class="text-danger small" />
+                    </div>
 
                         <div class="mb-3">
                             <label for="Description" class="form-label">Department Description *</label>
@@ -62,6 +79,7 @@
                                 Create Department
                             </button>
                         </div>
+
                     </EditForm>
 
                     @if (!string.IsNullOrEmpty(_message))

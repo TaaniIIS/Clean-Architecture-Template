@@ -21,12 +21,12 @@ namespace HRLeaveManagement.Infrastructure
         {
 
         }
-
-        // This property represents the 'Positions' table in your database.
-        // EF Core will use this to track, query, and save Position entities.
+        // DbSet properties represent tables in the database.
+        // Each DbSet corresponds to an entity class in your application.
+        // For example, 'Employees' will be a table for the 'Employee' entity.
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
-        //public DbSet<Team> Teams { get; set; }
+ 
         public DbSet<Position> Positions { get; set; }
        // public DbSet<Shift> shifts { get; set; }
         public DbSet<WorkSchedule> WorkSchedules { get; set; }

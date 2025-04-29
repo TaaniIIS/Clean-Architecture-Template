@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HRLeaveManagement.Application.Interfaces;
 using HRLeaveManagement.Application.Response;
+using HRLeaveManagement.CoreBusiness.Entity;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using static HRLeaveManagement.CoreBusiness.Entity.Shift;
