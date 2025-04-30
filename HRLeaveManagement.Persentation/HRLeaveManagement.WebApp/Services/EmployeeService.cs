@@ -33,10 +33,6 @@ namespace HRLeaveManagement.WebApp.Services
                 var employees = await _httpClient.GetFromJsonAsync<List<EmployeeViewModel>>("/api/Employee/GetEmployee");
                 var departments = await _httpClient.GetFromJsonAsync<List<DepartmentViewModel>>("/api/Department/GetDepartment");
                 var positions = await _httpClient.GetFromJsonAsync<List<PositionViewModel>>("/api/Position/GetPosition");
-               // var leaveTypes = await _httpClient.GetFromJsonAsync<List<LeaveTypeViewModel>>("/api/LeaveType");
-               
-               //var employmentTypes = await _httpClient.GetFromJsonAsync<List<EmploymentTypeViewModel>>("/api/EmploymentTypes");
-
 
                 // Join them to get department names
                 var result = employees.Select(e => new EmployeeViewModel
@@ -48,26 +44,12 @@ namespace HRLeaveManagement.WebApp.Services
                     DepartmentID = e.DepartmentID,
                     DepartmentName = departments.FirstOrDefault(d => d.Departmentid == e.DepartmentID)?.Name ?? "N/A",
                     PositionID = e.PositionID,
+                    Shift = e.Shift,
+                    Phone = e.Phone,
                     
                     PositionName = positions.FirstOrDefault(p => p.PositionId == e.PositionID)?.Title ?? "N/A",
                     JobLevel = positions.FirstOrDefault(p => p.PositionId == e.PositionID)?.JobLevel ?? "N/A",
-                  //  Shift =employmentTypes.FirstOrDefault(p => p.Id == e.EmploymentTypeID)?.Name ?? "N/A",
-
-
                 }).ToList();
-
-
-
-
-                //var result = employees.Select(e => new EmployeeViewModel
-                //{
-                //    EmployeeID = e.EmployeeID,
-                //    FirstName = e.FirstName,
-                //    LastName = e.LastName,
-                //    Email = e.Email,
-                //    DepartmentID = e.DepartmentID,
-                //    DepartmentName = departments.FirstOrDefault(d => d.Departmentid == e.DepartmentID)?.Name ?? "N/A"
-                //}).ToList();
 
                 return result;
             }
@@ -76,11 +58,6 @@ namespace HRLeaveManagement.WebApp.Services
                 Console.WriteLine($"Error fetching employees with departments: {ex.Message}");
                 return new List<EmployeeViewModel>();
             }
-
-
-
-
-
         }
         public async Task<EmployeeViewModel> GetById(int id)
         {
@@ -94,6 +71,22 @@ namespace HRLeaveManagement.WebApp.Services
                 return null;
             }
         }
+
+        public async Task<EmployeeViewModel> Post(EmployeeViewModel employeeViewModel)
+        {
+            var response = await _httpClient.PostAsJsonAsync("/api/Employee/CreateEmployee", employeeViewModel);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<EmployeeViewModel>();
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error creating employee: {response.StatusCode} - {errorContent}");
+                return null;
+            }
+        }
+
         public async Task<EmployeeViewModel> Put(int id, EmployeeViewModel employeeViewModel)
         {
             var response = await _httpClient.PutAsJsonAsync($"/api/Employee/{id}", employeeViewModel);
@@ -108,20 +101,7 @@ namespace HRLeaveManagement.WebApp.Services
                 return null;
             }
         }
-        public async Task<EmployeeViewModel> Post(EmployeeViewModel employeeViewModel)
-        {
-            var response = await _httpClient.PostAsJsonAsync("/api/Employee", employeeViewModel);
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadFromJsonAsync<EmployeeViewModel>();
-            }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Error creating employee: {response.StatusCode} - {errorContent}");
-                return null;
-            }
-        }
+       
         public async Task<bool> Delete(int id)
         {
             throw new NotImplementedException();

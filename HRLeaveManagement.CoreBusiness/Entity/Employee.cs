@@ -23,12 +23,10 @@ namespace HRLeaveManagement.CoreBusiness.Entity
         public int PositionID { get; set; }
         public int DepartmentID { get; set; }
 
-        public int LeaveTypeID { get; set; }
 
         // Navigation Properties
         public Position Position { get; set; }
         public Department Department { get; set; }
-       // public ICollection<LeaveRequest> LeaveRequests { get; set; }
         public ICollection<WorkSchedule> WorkSchedules { get; set; }
     }
 }

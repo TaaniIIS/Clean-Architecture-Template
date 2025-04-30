@@ -26,7 +26,7 @@ namespace HRLeaveManagement.Application.Profiles
             // 'ReverseMap()' adds the reverse mapping as well, i.e., from PositionDto to Position.
             CreateMap<Position, PositionDto>()
             .ReverseMap();
-            CreateMap<Employee,EmployeeDto>() .ReverseMap();
+            CreateMap<Employee,EmployeeDto>().ReverseMap();
             //CreateMap<Department,EmployeeDepartmentDto>() .ReverseMap();
             CreateMap<Department, DepartmentDto>().ReverseMap();
             CreateMap<Shift, ShiftDto>().ReverseMap()

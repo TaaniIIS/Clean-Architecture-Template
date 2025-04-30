@@ -1,6 +1,7 @@
 ﻿using HRLeaveManagement.Application.Features.Employee;
 using HRLeaveManagement.Application.Features.Employee.Commands.CreateEmployee;
 using HRLeaveManagement.Application.Features.Employee.Queries.GetEmployee;
+using HRLeaveManagement.Application.Features.Employee.Queries.GetEmployeeById;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,18 +19,20 @@ namespace HRLeaveManagement.WebApi.Controllers
         }
 
         [HttpPost("CreateEmployee")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<CreateEmployeeResponse>> CreateEmployee([FromBody] EmployeeDto command)
         {
             var response = await Mediator.Send(new CreateEmployeeCommand { CreateEmployee = command });
             return Ok(response);
         }
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<GetEmployeeByIdResponse>> GetEmployee(int id)
-        //{
-        //    var result = await Mediator.Send(new GetEmployeeByIdQuery { Id = id });
-        //    return Ok(result);
-        //}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetEmployeeByIdResponse>> GetEmployee(int id)
+        {
+            var result = await Mediator.Send(new GetEmployeeByIdQuery { Id = id });
+            return Ok(result);
+        }
 
         //[HttpDelete("{id}")]
         //public async Task<ActionResult<DeleteEmployeeResponse>> Delete(int id)

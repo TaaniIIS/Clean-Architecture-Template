@@ -1,0 +1,268 @@
+﻿@page "/employees/edit/{EmployeeId:int}"
+@using HRLeaveManagement.Application.Features.Departments
+@using HRLeaveManagement.Application.Features.Position
+@using HRLeaveManagement.WebApp.Services
+@inject IEmployeeService EmployeeService
+@inject IDepartmentService DepartmentService
+@inject IPositionService PositionService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-edit me-2"></i>
+                            Edit Employee
+                        </h5>
+                        <button class="btn btn-sm btn-light" @onclick="NavigateToList">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    @if (_isLoading)
+                    {
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    }
+                    else if (_employee == null)
+                    {
+                        <div class="alert alert-danger">
+                            Employee not found
+                        </div>
+                    }
+                    else
+                    {
+                        <EditForm Model="_employee" OnValidSubmit="HandleValidSubmit">
+                            <DataAnnotationsValidator />
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">First Name *</label>
+                                    <InputText @bind-Value="_employee.FirstName" class="form-control" />
+                                    <ValidationMessage For="@(() => _employee.FirstName)" class="text-danger small" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Last Name *</label>
+                                    <InputText @bind-Value="_employee.LastName" class="form-control" />
+                                    <ValidationMessage For="@(() => _employee.LastName)" class="text-danger small" />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Email *</label>
+                                <InputText @bind-Value="_employee.Email" class="form-control" />
+                                <ValidationMessage For="@(() => _employee.Email)" class="text-danger small" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Phone *</label>
+                                <InputNumber @bind-Value="_employee.Phone" class="form-control" />
+                                <ValidationMessage For="@(() => _employee.Phone)" class="text-danger small" />
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Department *</label>
+                                    <InputSelect @bind-Value="_employee.DepartmentID" class="form-select">
+                                        <option value="">Select Department</option>
+                                        @if (departments != null)
+                                        {
+                                            @foreach (var dept in departments)
+                                            {
+                                                <option value="@dept.Departmentid">@dept.Name</option>
+                                            }
+                                        }
+                                    </InputSelect>
+                                    <ValidationMessage For="@(() => _employee.DepartmentID)" class="text-danger small" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Position *</label>
+                                    <InputSelect @bind-Value="_employee.PositionID" class="form-select">
+                                        <option value="">Select Position</option>
+                                        @if (positions != null)
+                                        {
+                                            @foreach (var pos in positions)
+                                            {
+                                                <option value="@pos.PositionId">@pos.Title</option>
+                                            }
+                                        }
+                                    </InputSelect>
+                                    <ValidationMessage For="@(() => _employee.PositionID)" class="text-danger small" />
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Job Level</label>
+                                    <InputText @bind-Value="_employee.JobLevel" class="form-control" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Shift</label>
+                                    <InputSelect @bind-Value="_employee.Shift" class="form-select">
+                                        <option value="Morning">Morning</option>
+                                        <option value="Afternoon">Afternoon</option>
+                                        <option value="Night">Night</option>
+                                    </InputSelect>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-danger" @onclick="ConfirmDelete" 
+                                        disabled="@_isSubmitting">
+                                    <i class="fas fa-trash-alt me-2"></i>Delete
+                                </button>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-outline-secondary" @onclick="NavigateToList" 
+                                            disabled="@_isSubmitting">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
+                                        @if (_isSubmitting)
+                                        {
+                                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                        }
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </EditForm>
+                    }
+
+                    @if (!string.IsNullOrEmpty(_message))
+                    {
+                        <div class="alert @(_isSuccess ? "alert-success" : "alert-danger") mt-3 mb-0">
+                            <i class="fas @(_isSuccess ? "fa-check-circle" : "fa-exclamation-circle") me-2"></i>
+                            @_message
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int EmployeeId { get; set; }
+
+    private EmployeeViewModel _employee;
+    private List<DepartmentViewModel> departments;
+    private List<PositionViewModel> positions;
+    private bool _isLoading = true;
+    private bool _isSubmitting = false;
+    private string _message = string.Empty;
+    private bool _isSuccess = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadEmployeeData();
+        await LoadDropdownData();
+    }
+
+    private async Task LoadEmployeeData()
+    {
+        try
+        {
+            _employee = await EmployeeService.GetById(EmployeeId);
+            if (_employee == null)
+            {
+                _message = "Employee not found";
+            }
+        }
+        catch (Exception ex)
+        {
+            _message = $"Error loading employee: {ex.Message}";
+            _isSuccess = false;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task LoadDropdownData()
+    {
+        try
+        {
+            departments = await DepartmentService.Get();
+            positions = await PositionService.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            _message = $"Error loading dropdown data: {ex.Message}";
+            _isSuccess = false;
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        _isSubmitting = true;
+        _message = string.Empty;
+
+        try
+        {
+            var result = await EmployeeService.Put( EmployeeId, _employee);
+          //  _isSuccess = result.Success;
+           // _message = result.Message;
+
+            //if (result.Success)
+            {
+                await Task.Delay(800);
+                NavigationManager.NavigateTo("/employees");
+            }
+        }
+        catch (Exception ex)
+        {
+            _isSuccess = false;
+            _message = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {_employee.FirstName} {_employee.LastName}?"))
+        {
+            _isSubmitting = true;
+            try
+            {
+                var result = await EmployeeService.Delete(EmployeeId);
+               // if (result.Success)
+                {
+                    NavigationManager.NavigateTo("/employees");
+                }
+                //else
+                {
+                //    _message = result.Message;
+                //    _isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _message = $"Delete failed: {ex.Message}";
+                _isSuccess = false;
+            }
+            finally
+            {
+                _isSubmitting = false;
+            }
+        }
+    }
+
+    private void NavigateToList()
+    {
+        NavigationManager.NavigateTo("/employees");
+    }
+}

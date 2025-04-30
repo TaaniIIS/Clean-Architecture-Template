@@ -10,8 +10,6 @@
     <Folder Include="Features\Category\" />
     <Folder Include="Features\Employee\Commands\DeleteEmployee\" />
     <Folder Include="Features\Employee\Commands\UpdateEmployee\" />
-    <Folder Include="Features\Employee\Queries\GetEmployeeById\" />
-    <Folder Include="Features\Employee\Queries\GetEmployeeById\" />
     <Folder Include="Features\LeaveRequest\Commands\DeleteLeaveRequest1\" />
     <Folder Include="Features\LeaveRequest\Commands\UpdateLeaveRequest1\" />
   </ItemGroup>

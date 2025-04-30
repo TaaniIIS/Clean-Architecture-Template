@@ -2,7 +2,7 @@
 @page "/GetEmployee"
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using HRLeaveManagement.WebApp.Services
-
+@inject IJSRuntime JSRuntime
 @inject IEmployeeService EmployeeService
 @inject NavigationManager NavigationManager
 
@@ -41,6 +41,8 @@
                     <PropertyColumn Property="@(e => e.Email)" Title="Email" Sortable="true" />
                     <PropertyColumn Property="@(e => e.DepartmentName)" Title="Department" Sortable="true" />
                      <PropertyColumn Property="@(e => e.Shift)" Title="Shift" Sortable="true" /> 
+                     @* <PropertyColumn Property="@(e => e.Phone)" Title="Phone" Sortable="true" />  *@
+
 
 
                     <!-- Add additional columns for related entities -->
@@ -75,8 +77,6 @@
 
     private async Task LoadEmployees()
     {
-        // employees = await EmployeeService.Get();
-        // StateHasChanged();
 
         try
         {
@@ -102,7 +102,7 @@
 
     private async Task DeleteEmployee(int id)
     {
-        //if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this employee?"))
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this employee?"))
         {
             var result = await EmployeeService.Delete(id);
             if (result)

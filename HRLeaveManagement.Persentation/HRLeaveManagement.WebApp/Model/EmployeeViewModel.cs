@@ -11,9 +11,9 @@
         public string JobLevel { get; set; }
 
         public string Shift { get; set; }
-
+        public int Phone { get; set; }
         public int PositionID { get; set; }
         public int DepartmentID { get; set; }
-        public int LeaveTypeID { get; set; }
+       // public int LeaveTypeID { get; set; }
     }
 }
