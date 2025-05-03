@@ -1,0 +1,153 @@
+﻿@page "/leaverequests/create"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IEmployeeService EmployeeService
+@inject ILeaveTypeService LeaveTypeService
+@inject IleaveRequestService leaveRequestService
+
+
+<h3>Create New Leave Request</h3>
+
+<EditForm Model="@newLeaveRequest" OnValidSubmit="@HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label class="form-label">Employee *</label>
+        <InputSelect @bind-Value="newLeaveRequest.EmployeeID" class="form-control">
+            <option value="">Select Employee</option>
+            @foreach (var employee in employees)
+            {
+                <option value="@employee.EmployeeID">@employee.FirstName @employee.LastName</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => newLeaveRequest.EmployeeID)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Leave Type *</label>
+        <InputSelect @bind-Value="newLeaveRequest.LeaveTypeID" class="form-control">
+            <option value="">Select Leave Type</option>
+            @foreach (var leaveType in leaveTypes)
+            {
+                <option value="@leaveType.LeaveTypeID">@leaveType.Name</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => newLeaveRequest.LeaveTypeID)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Shift *</label>
+        <InputSelect @bind-Value="newLeaveRequest.shift" class="form-control">
+            <option value="">Select Shift</option>
+            <option value="Morning">Morning</option>
+            <option value="Afternoon">Afternoon</option>
+            <option value="Night">Night</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => newLeaveRequest.shift)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Status *</label>
+        <InputSelect @bind-Value="newLeaveRequest.Status" class="form-control">
+            <option value="">Select Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => newLeaveRequest.Status)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Number of Leave Days *</label>
+        <InputNumber @bind-Value="newLeaveRequest.LeaveAmount" class="form-control" min="1" />
+        <ValidationMessage For="@(() => newLeaveRequest.LeaveAmount)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Start Date *</label>
+        <InputDate @bind-Value="newLeaveRequest.StartDate" class="form-control" />
+        <ValidationMessage For="@(() => newLeaveRequest.StartDate)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">End Date *</label>
+        <InputDate @bind-Value="newLeaveRequest.EndDate" class="form-control" />
+        <ValidationMessage For="@(() => newLeaveRequest.EndDate)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <InputTextArea @bind-Value="newLeaveRequest.Description" class="form-control" />
+    </div>
+
+    <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" disabled="@isSubmitting">
+            @if (isSubmitting)
+            {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            }
+            Create Leave Request
+        </button>
+    </div>
+</EditForm>
+
+@code {
+    private LeaveRequestViewModel newLeaveRequest = new();
+    private List<EmployeeViewModel> employees = new();
+    private List<LeaveTypeViewModel> leaveTypes = new();
+    private bool isSubmitting = false;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Load dropdown data
+            employees = await EmployeeService.Get();
+            leaveTypes = await LeaveTypeService.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading data: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        isSubmitting = true;
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync("/api/LeaveRequest", newLeaveRequest);
+            var result = await leaveRequestService.CreateLeaveRequest(newLeaveRequest);
+            if (response.IsSuccessStatusCode)
+            {
+                Navigation.NavigateTo("/leaveRequest");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error creating leave request: {error}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/leaveRequest");
+    }
+}

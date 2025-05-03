@@ -36,6 +36,7 @@ namespace HRLeaveManagement.Infrastructure.Extensions
             // Whenever IRepository<T> is requested, the app will inject Repository<T>.
             service.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             service.AddTransient<IEmployeeRepository, DepartmentEmployeesRepository>();
+
            //service.AddTransient<IEmployeeService, EmployeeService>();
 
             // Returns the modified IServiceCollection so the caller can continue chaining other service registrations.

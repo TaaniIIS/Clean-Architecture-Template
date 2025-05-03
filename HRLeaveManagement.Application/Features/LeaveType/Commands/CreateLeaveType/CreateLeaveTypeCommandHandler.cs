@@ -27,37 +27,47 @@ namespace HRLeaveManagement.Application.Features.LeaveType.Commands.CreateLeaveT
         }
         public async Task<BaseResponse<LeaveTypeDto>> Handle(CreateLeaveTypeCommand request, CancellationToken cancellationToken)
         {
-            var validator = new CreateLeaveTypeValidator();
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+            //var validator = new CreateLeaveTypeValidator();
+            //var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+            var leaveTypeEntity = _mapper.Map<HRLeaveManagement.CoreBusiness.Entity.LeaveType>(request.createLeave);
+
+            // Save to database
+            var createdEntity = await _repository.AddAsync(leaveTypeEntity);
+
+            // Map entity back to DTO for returning
+            var resultDto = _mapper.Map<LeaveTypeDto>(createdEntity);
+
+            return BaseResponse<LeaveTypeDto>.SuccessResult("leave Type created successfully", resultDto);
 
             // Return error response if validation fails
-            if (!validationResult.IsValid)
-            {
-                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-                foreach (var error in errors)
-                    _logger.LogError("Validation failed: {Error}", error);
+            //if (!validationResult.IsValid)
+            //{
+            //    var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+            //    foreach (var error in errors)
+            //        _logger.LogError("Validation failed: {Error}", error);
 
-                return BaseResponse<LeaveTypeDto>.FailureResult("Validation failed", errors);
-            }
+            //    return BaseResponse<LeaveTypeDto>.FailureResult("Validation failed", errors);
+            //}
 
-            try
-            {
-                // Map DTO to domain entity
-                var leaveTypeEntity = _mapper.Map<HRLeaveManagement.CoreBusiness.Entity.LeaveType>(request.createLeave);
+            //try
+            //{
+            //    // Map DTO to domain entity
+            //    var leaveTypeEntity = _mapper.Map<HRLeaveManagement.CoreBusiness.Entity.LeaveType>(request.createLeave);
 
-                // Save to database
-                var createdEntity = await _repository.AddAsync(leaveTypeEntity);
+            //    // Save to database
+            //    var createdEntity = await _repository.AddAsync(leaveTypeEntity);
 
-                // Map entity back to DTO for returning
-                var resultDto = _mapper.Map<LeaveTypeDto>(createdEntity);
+            //    // Map entity back to DTO for returning
+            //    var resultDto = _mapper.Map<LeaveTypeDto>(createdEntity);
 
-                return BaseResponse<LeaveTypeDto>.SuccessResult("leave Type created successfully", resultDto);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error creating leave Type: {Message}", ex.Message);
-                return BaseResponse<LeaveTypeDto>.FailureResult("An unexpected error occurred while creating the position.");
-            }
+            //    return BaseResponse<LeaveTypeDto>.SuccessResult("leave Type created successfully", resultDto);
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError("Error creating leave Type: {Message}", ex.Message);
+            //    return BaseResponse<LeaveTypeDto>.FailureResult("An unexpected error occurred while creating the position.");
+            //}
         }
     }
 

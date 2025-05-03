@@ -7,11 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\LeaveType\NewFolder\**" />
+    <EmbeddedResource Remove="Features\LeaveType\NewFolder\**" />
+    <None Remove="Features\LeaveType\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Features\Category\" />
     <Folder Include="Features\Employee\Commands\DeleteEmployee\" />
     <Folder Include="Features\Employee\Commands\UpdateEmployee\" />
     <Folder Include="Features\LeaveRequest\Commands\DeleteLeaveRequest1\" />
     <Folder Include="Features\LeaveRequest\Commands\UpdateLeaveRequest1\" />
+    <Folder Include="Features\LeaveType\Commands\DeleteLeaveType\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />

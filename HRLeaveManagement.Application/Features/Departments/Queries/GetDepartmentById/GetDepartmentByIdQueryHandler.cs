@@ -29,7 +29,7 @@ namespace HRLeaveManagement.Application.Features.Departments.Queries.GetDepartme
         {
             try
             {
-                // Retrieve all positions
+                // Retrieve all departments
                 var result = await _repository.GetByIdAsync(request.Id);
 
                 // Map entity list to DTO list

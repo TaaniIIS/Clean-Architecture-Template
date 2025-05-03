@@ -21,8 +21,8 @@ namespace HRLeaveManagement.Application.Features.Employee
         // Foreign Keys
         public int PositionID { get; set; }
         public int DepartmentID { get; set; }
-        public Department Department { get; set; }
-        public ICollection<WorkSchedule> WorkSchedules { get; set; }
+        //public Department Department { get; set; }
+        //public ICollection<WorkSchedule> WorkSchedules { get; set; }
 
     }
 }

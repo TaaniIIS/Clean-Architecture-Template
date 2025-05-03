@@ -8,6 +8,7 @@ using HRLeaveManagement.Application.Features.Departments;
 using HRLeaveManagement.Application.Features.Employee;
 using HRLeaveManagement.Application.Features.Employee.Queries.GetEmployeeByDepartment;
 using HRLeaveManagement.Application.Features.EmploymentType;
+using HRLeaveManagement.Application.Features.LeaveRequest;
 using HRLeaveManagement.Application.Features.LeaveType;
 using HRLeaveManagement.Application.Features.Position;
 using HRLeaveManagement.CoreBusiness.Entity;
@@ -33,7 +34,8 @@ namespace HRLeaveManagement.Application.Profiles
             .ForMember(dest => dest.ShiftId, opt => opt.MapFrom(src => src.Id));
             CreateMap<LeaveType, LeaveTypeDto>().ReverseMap();
             // Optional: You can customize mappings like this if property names don't match:
-            // 
+
+            CreateMap<LeaveRequest, LeaveRequestDto>().ReverseMap();
         }
     }
 

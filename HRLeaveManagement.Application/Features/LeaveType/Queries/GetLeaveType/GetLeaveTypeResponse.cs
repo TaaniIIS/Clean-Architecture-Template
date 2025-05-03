@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using HRLeaveManagement.Application.Response;
 
-namespace HRLeaveManagement.Application.Features.LeaveRequest.Commands.CreateLeaveRequest
+namespace HRLeaveManagement.Application.Features.LeaveType.Queries.GetLeaveType
 {
-    public class CreateLeaveRequestResponse : BaseResponse<LeaveRequestDto>
+    public class GetLeaveTypeResponse :BaseResponse<LeaveTypeDto>
     {
     }
 }

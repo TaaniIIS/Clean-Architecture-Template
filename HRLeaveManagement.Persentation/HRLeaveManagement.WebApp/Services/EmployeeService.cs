@@ -14,18 +14,6 @@ namespace HRLeaveManagement.WebApp.Services
         }
         public async Task<List<EmployeeViewModel>> Get()
         {
-            //try
-            //{
-            //    // /api/Employee/GetEmployee
-            //    return await _httpClient.GetFromJsonAsync<List<EmployeeViewModel>>("/api/Employee/GetEmployee");
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine($"Error fetching employees: {ex.Message}");
-            //    return new List<EmployeeViewModel>();
-            //}
-
 
             try
             {

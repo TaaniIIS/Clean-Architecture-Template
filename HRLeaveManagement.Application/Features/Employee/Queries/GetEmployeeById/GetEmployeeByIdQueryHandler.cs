@@ -26,22 +26,43 @@ namespace HRLeaveManagement.Application.Features.Employee.Queries.GetEmployeeByI
             _mapper = mapper;          // For object mapping
             _logger = logger;          // For logging
         }
-        public Task<BaseResponse<EmployeeDto>> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<EmployeeDto>> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
-           // try
+
+            // 1. AWAIT the async call
+            var employee = await _repository.GetByIdAsync(request.Id);
+
+            // 2. Handle null case
+            if (employee == null)
             {
-                // Retrieve all employees
-                var result = _repository.GetByIdAsync(request.Id);
-                // Map entity list to DTO list
-                var employeeDtos = _mapper.Map<EmployeeDto>(result);
-                // Return result with mapped data
-                return Task.FromResult(BaseResponse<EmployeeDto>.SuccessResult("Employees retrieved successfully.", employeeDtos));
+                return BaseResponse<EmployeeDto>.FailureResult("Employee not found");
             }
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError("Error retrieving all employees: {Message}", ex.Message);
-            //    return Task.FromResult(BaseResponse<EmployeeDto>.FailureResult("An error occurred while retrieving employees."));
-            //}
+
+            // 3. Properly map the entity
+            var employeeDto = _mapper.Map<EmployeeDto>(employee);
+
+            // 4. Return the actual mapped data
+            return BaseResponse<EmployeeDto>.SuccessResult(
+                data: employeeDto,
+                message: "Employee retrieved successfully");
+
+
+
+
+            //// try
+            // {
+            //     // Retrieve all employees
+            //     var result = _repository.GetByIdAsync(request.Id);
+            //     // Map entity list to DTO list
+            //     var employeeDtos = _mapper.Map<EmployeeDto>(result);
+            //     // Return result with mapped data
+            //     return Task.FromResult(BaseResponse<EmployeeDto>.SuccessResult("Employees retrieved successfully.", employeeDtos));
+            // }
+            // //catch (Exception ex)
+            // //{
+            // //    _logger.LogError("Error retrieving all employees: {Message}", ex.Message);
+            // //    return Task.FromResult(BaseResponse<EmployeeDto>.FailureResult("An error occurred while retrieving employees."));
+            // //}
         }
     }
 }

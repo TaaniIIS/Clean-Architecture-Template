@@ -8,9 +8,8 @@ using MediatR;
 
 namespace HRLeaveManagement.Application.Features.LeaveRequest.Commands.CreateLeaveRequest
 {
-    public class CreateLeaveRequestCommand :  IRequest<BaseResponse<LeaveRequestDto>> 
+    public class CreateLeaveRequestCommand :IRequest<BaseResponse<LeaveRequestDto>> 
     {
-        public int EmployeeID { get; set; }
-        public LeaveRequestDto createLeaveRequest { get; set; }
+        public LeaveRequestDto createLRequest { get; set; }
     }
 }

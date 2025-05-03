@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using HRLeaveManagement.Application.Features.Departments;
 using HRLeaveManagement.Application.Features.Departments.Commands.CreateDepartment;
 using HRLeaveManagement.Application.Interfaces;
@@ -18,21 +19,15 @@ namespace HRLeaveManagement.Application.Features.LeaveRequest.Commands.CreateLea
     public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveRequestCommand, BaseResponse<LeaveRequestDto>>
     {
         private readonly IRepository<HRLeaveManagement.CoreBusiness.Entity.LeaveRequest> _repository;
-        private readonly IEmployeeRepository _employeeRepo;
-        //private readonly ILeaveTypeRepository _leaveTypeRepo;
         private readonly IMapper _mapper;
         private readonly ILogger<CreateLeaveRequestCommandHandler> _logger;
 
         public CreateLeaveRequestCommandHandler(
             IRepository<HRLeaveManagement.CoreBusiness.Entity.LeaveRequest> repository,
-            IEmployeeRepository employeeRepo,
-            //ILeaveTypeRepository leaveTypeRepo,
             IMapper mapper,
             ILogger<CreateLeaveRequestCommandHandler> logger)
         {
             _repository = repository;
-            _employeeRepo = employeeRepo;
-            //_leaveTypeRepo = leaveTypeRepo;
             _mapper = mapper;
             _logger = logger;
         }
@@ -40,22 +35,36 @@ namespace HRLeaveManagement.Application.Features.LeaveRequest.Commands.CreateLea
         {
             var validator = new CreateLeaveRequestValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+            // Return error response if validation fails
+            if (!validationResult.IsValid)
+            {
+                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                foreach (var error in errors)
+                    _logger.LogError("Validation failed: {Error}", error);
+                     
+                return BaseResponse<LeaveRequestDto>.FailureResult("Validation failed", errors);
+            }
+
             try
             {
-                // Validate employee exists
-                //var employee = await IEmployeeRepository.GetByIdAsync(request.EmployeeID);
-                //if (employee == null)
-                //{
-                //    return BaseResponse<LeaveRequestDto>.FailureResult("Employee not found.");
-                //}
-                //return BaseResponse<DepartmentDto>.SuccessResult("New Department created successfully", resultDto);
-                return BaseResponse<LeaveRequestDto>.FailureResult("Employee not found.");
+                // Map DTO to domain entity
+                var LeaveRequestEntity = _mapper.Map<HRLeaveManagement.CoreBusiness.Entity.LeaveRequest>(request.createLRequest);
+
+                // Save to database
+                var createdEntity = await _repository.AddAsync(LeaveRequestEntity);
+
+                // Map entity back to DTO for returning
+                var resultDto = _mapper.Map<LeaveRequestDto>(createdEntity);
+
+                return BaseResponse<LeaveRequestDto>.SuccessResult("New leave created successfully", resultDto);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error Occured while Department: {Message}", ex.Message);
-                return BaseResponse<LeaveRequestDto>.FailureResult("An unexpected error occurred while Creating the New Department.");
+                _logger.LogError("Error Occured while leave: {Message}", ex.Message);
+                return BaseResponse<LeaveRequestDto>.FailureResult("An unexpected error occurred while Creating the New leave.");
             }
+
 
         }
     }

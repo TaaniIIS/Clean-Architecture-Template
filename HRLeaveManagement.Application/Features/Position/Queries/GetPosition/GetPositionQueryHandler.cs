@@ -38,10 +38,10 @@ namespace HRLeaveManagement.Application.Features.Position
                 var positions = await _repository.GetAllAsync();
 
                 // Map entity list to DTO list
-                var positionDtos = _mapper.Map<List<PositionDto>>(positions);
+                var positionDto = _mapper.Map<List<PositionDto>>(positions);
 
                 // Return result with mapped data
-                return BaseResponse<List<PositionDto>>.SuccessResult("Positions retrieved successfully.", positionDtos);
+                return BaseResponse<List<PositionDto>>.SuccessResult("Positions retrieved successfully.", positionDto);
             }
             catch (Exception ex)
             {

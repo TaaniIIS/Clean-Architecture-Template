@@ -83,3 +83,30 @@ else
         Navigation.NavigateTo($"/position/delete/{id}");
     }
 }
+
+
+
+        @*
+            <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Default Days</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in positions)
+            {
+                <tr>
+                    <td>@item.PositionId</td>
+                    <td>@item.JobLevel</td>
+                    <td>@item.Title</td>
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+        *@
