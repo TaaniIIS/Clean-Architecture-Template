@@ -36,6 +36,8 @@ namespace HRLeaveManagement.Application.Features.LeaveRequest.Commands.CreateLea
             var validator = new CreateLeaveRequestValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
+            
+
             // Return error response if validation fails
             if (!validationResult.IsValid)
             {
@@ -45,6 +47,18 @@ namespace HRLeaveManagement.Application.Features.LeaveRequest.Commands.CreateLea
                      
                 return BaseResponse<LeaveRequestDto>.FailureResult("Validation failed", errors);
             }
+
+            // get leave amount by leave type id
+            var leaveType = await _repository.GetByIdAsync(request.createLRequest.LeaveTypeID);
+
+
+
+
+            // Check if leaveAmount is less than or equal to default days
+            //if (request.createLRequest.LeaveAmount > leaveType.DefaultDays)
+            //{
+            //    return BaseResponse<LeaveRequestDto>.FailureResult("Leave amount cannot be greater than leave type amount.");
+            //}
 
             try
             {

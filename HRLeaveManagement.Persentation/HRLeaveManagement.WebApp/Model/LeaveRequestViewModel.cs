@@ -1,4 +1,6 @@
-﻿namespace HRLeaveManagement.WebApp.Model
+﻿using HRLeaveManagement.CoreBusiness.Entity;
+
+namespace HRLeaveManagement.WebApp.Model
 {
     public class LeaveRequestViewModel
     {
@@ -16,9 +18,18 @@
         public string Status { get; set; } = "Pending"; // Default status
         public string Description { get; set; }
         public int LeaveAmount { get; set; }
+        public int LeaveBalance { get; set; }
 
         // Foreign Keys
         public int EmployeeID { get; set; }
         public int LeaveTypeID { get; set; }
+
+        //public void ValidateRequest(LeaveType leaveType)
+        //{
+        //    if (LeaveAmount > leaveType.DefaultDays)
+        //        throw new InvalidOperationException(
+        //            $"Cannot request more than {leaveType.DefaultDays} days for {leaveType.Name} leave."
+        //        );
+        //}
     }
 }

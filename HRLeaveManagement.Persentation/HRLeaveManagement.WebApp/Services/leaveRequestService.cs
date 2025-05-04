@@ -59,7 +59,8 @@ namespace HRLeaveManagement.WebApp.Services
                                 EndDate = lr.EndDate,
                                 Status = lr.Status ?? "Pending",
                                 Description = lr.Description ?? string.Empty,
-                                LeaveAmount = lr.LeaveAmount
+                                LeaveAmount = lr.LeaveAmount,
+                                LeaveBalance = leaveType.DefaultDays-lr.LeaveAmount
                             };
 
                 return query.ToList();
@@ -77,17 +78,28 @@ namespace HRLeaveManagement.WebApp.Services
         }
         public async Task<BaseResponse<LeaveRequestViewModel>> CreateLeaveRequest(LeaveRequestViewModel leaveRequest)
         {
-            var response = await _http.PostAsJsonAsync("/api/LeaveRequest", leaveRequest);
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadFromJsonAsync<BaseResponse<LeaveRequestViewModel>>();
-            }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Error creating employee: {response.StatusCode} - {errorContent}");
-                return null;
-            }
+
+            // Check if leaveAmount is less than or equal to default days
+            //var leaveType = await _http.GetFromJsonAsync<LeaveTypeViewModel>($"/api/LeaveType/{leaveRequest.LeaveTypeID}");
+            //if (leaveRequest.LeaveAmount <= leaveType.DefaultDays)
+            //{
+                var response = await _http.PostAsJsonAsync("/api/LeaveRequest", leaveRequest);
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<BaseResponse<LeaveRequestViewModel>>();
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Error creating employee: {response.StatusCode} - {errorContent}");
+                    return null;
+                }
+            //}
+            //else
+            //{
+            //    Console.WriteLine($"Leave amount exceeds default days: {leaveRequest.LeaveAmount} > {leaveType.DefaultDays}");
+            //    return null;
+            //}  
         }
 
         public Task<BaseResponse<LeaveRequestViewModel>> UpdateLeaveRequest(int id, LeaveRequestViewModel leaveRequest)

@@ -26,6 +26,9 @@ else
             <i class="fas fa-plus"></i> Create New
         </button>
     </div>
+    <div class="mb-3">
+       
+    </div>
 
     <table class="table table-striped table-hover">
         <thead class="table-dark">
@@ -34,10 +37,10 @@ else
                 <th>Name</th>
                 <th>Leave Type</th>
 
-                <th>#No Leave</th>
-                <th>shift</th>
-
+                <th>Leave Request</th>
+                <th> leave Balance </th>
                 <th>status</th>
+                <th>shift</th>
                 <th>Description</th>
                 <th>Star Date</th>
                 <th>End Date</th>
@@ -55,9 +58,11 @@ else
                     <td>@item.LeaveTypeName</td>
 
                     <td>@item.LeaveAmount</td>
+                    <td>@item.LeaveBalance</td>
+                    <td>@item.Status</td>
                     <td>@item.shift</td>
 
-                    <td>@item.Status</td>
+                    
                     <td>@item.Description</td>
                     <td>@item.StartDate.ToShortDateString()</td>
                     <td>@item.EndDate.ToShortDateString()</td>

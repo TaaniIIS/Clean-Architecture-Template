@@ -15,7 +15,7 @@ namespace HRLeaveManagement.CoreBusiness.Entity
         public string Status { get; set; } = "Pending"; // Default status
         public string Description { get; set; }
         public int LeaveAmount { get; set; }
-
+        public int DefaultDays { get; set; }
         // Foreign Keys
         public  int EmployeeID { get; set; }
         public int LeaveTypeID { get; set; }

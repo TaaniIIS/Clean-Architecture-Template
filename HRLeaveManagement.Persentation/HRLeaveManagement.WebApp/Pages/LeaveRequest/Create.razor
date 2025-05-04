@@ -124,17 +124,9 @@
 
         try
         {
-            var response = await Http.PostAsJsonAsync("/api/LeaveRequest", newLeaveRequest);
             var result = await leaveRequestService.CreateLeaveRequest(newLeaveRequest);
-            if (response.IsSuccessStatusCode)
-            {
-                Navigation.NavigateTo("/leaveRequest");
-            }
-            else
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Error creating leave request: {error}");
-            }
+            Navigation.NavigateTo("/leaveRequest");
+
         }
         catch (Exception ex)
         {
